@@ -6,7 +6,7 @@
             <p>Mes inicial: {{ $rangos['mes_inicial'] ?? 'No definido' }}</p>
             <p>Mes final: {{ $rangos['mes_final'] ?? 'No definido' }}</p>
         </div>
-        <form action="{{ route('reporte.procesarReporte') }}" method="POST">
+        <form action="{{ route('home.procesarReporte') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="reporte">Selecciona Reporte</label>

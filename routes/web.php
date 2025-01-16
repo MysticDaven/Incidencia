@@ -1,20 +1,25 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReporteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('reporte.ingresarRangos');
+    return redirect()->route('home.ingresarRangos');
 });
 
-Route::get('/rangos', [ReporteController::class, 'ingresarRangos'])
-    ->name('reporte.ingresarRangos');
+Route::get('/rangos', [HomeController::class, 'ingresarRangos'])
+    ->name('home.ingresarRangos');
 
-Route::post('/procesar-rangos', [ReporteController::class, 'procesarRangos'])
-    ->name('reporte.procesarRangos');
+Route::post('/procesar-rangos', [HomeController::class, 'procesarRangos'])
+    ->name('home.procesarRangos');
 
-Route::get('/reporte', [ReporteController::class, 'ingresarReporte'])
-    ->name('reporte.ingresarReporte');
+Route::get('/reporte', [HomeController::class, 'ingresarReporte'])
+    ->name('home.ingresarReporte');
 
-Route::post('/procesar-reporte', [ReporteController::class, 'procesarReporte'])    
-    ->name('reporte.procesarReporte');
+Route::post('/procesar-reporte', [HomeController::class, 'procesarReporte'])    
+    ->name('home.procesarReporte');
+
+// Route::post('/reporte/{reporte}', ReporteController::class);
+
+Route::post('/export-excel', [ReporteController::class, 'exportExcel']);

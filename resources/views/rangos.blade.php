@@ -1,6 +1,6 @@
 <x-base_layout>
     <div class="container mt-5">
-        <form action="{{ route('reporte.procesarRangos') }}" method="POST">
+        <form action="{{ route('home.procesarRangos') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="reporte_anio">Ingresar el año del reporte:</label>
