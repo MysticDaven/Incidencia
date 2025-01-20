@@ -27,6 +27,6 @@ class ExportService
         $export = new AniosExport($anio, $this->temporaryFileFactory);
 
         // Descargar el archivo Excel
-        return Excel::download($export, "anios_{$anio}.xlsx");
+        return Excel::download($export, "Anios_{$anio}.xlsm");
     }
 }

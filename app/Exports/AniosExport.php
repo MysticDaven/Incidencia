@@ -24,7 +24,7 @@ class AniosExport implements WithEvents
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                Log::info("EJECUCIÓN DEL AFTERSHEET");
+                // Log::info("EJECUCIÓN DEL AFTERSHEET");
             },
             BeforeWriting::class => function (BeforeWriting $event) {
                 $this->beforeWritting($event);
@@ -35,9 +35,9 @@ class AniosExport implements WithEvents
 
     public function beforeWritting(BeforeWriting $event)
     {
-        Log::info("ENTRANDO EN BeforeWriting");
+        // Log::info("ENTRANDO EN BeforeWriting");
     
-        $templatePath = storage_path('app/templates/plantilla ejemplo.xlsx');
+        $templatePath = storage_path('app/templates/PRINCIPALES_DELITOS_ESTATAL.xlsm');
     
         if (!file_exists($templatePath)) {
             throw new \Exception("La plantilla no existe en la ruta especificada: {$templatePath}");
@@ -55,19 +55,38 @@ class AniosExport implements WithEvents
         }
     
         // Agregar los datos a la plantilla
-        $row = 2; // Comenzamos en la fila 2
+        $row = 14; // Comenzamos en la fila 2
         foreach ($anios as $dato) {
-            $sheet->setCellValue("A{$row}", $dato->idanio);
-            $sheet->setCellValue("B{$row}", $dato->anio);
+            $sheet->setCellValue("C{$row}", $dato->idanio);
+            $sheet->setCellValue("D{$row}", $dato->anio);
             $row++;
         }
     
         // Crear un archivo temporal
         $temporaryFile = $this->temporaryFileFactory->makeLocal();
         IOFactory::createWriter($spreadsheet, 'Xlsx')->save($temporaryFile->getLocalPath());
+
     
         // Reabrir el archivo temporal en el evento
         $event->writer->reopen($temporaryFile, \Maatwebsite\Excel\Excel::XLSX);
         $event->writer->getSheetByIndex(0);
+
+        // $outputPath = storage_path('app/exports/anios_2029.xlsm');
+        
+        // try {
+        //     IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);
+        //     // Verifica si la extensión coincide
+        //     // if (pathinfo($outputPath, PATHINFO_EXTENSION) !== 'xlsm') {
+        //     //     rename($outputPath, storage_path('app/exports/anios_2024.xlsm'));
+        //     // }
+        //     // Log::info("Archivo generado correctamente en: " . $outputPath);
+        // } catch (\Exception $e) {
+        //     Log::error("Error al generar el archivo: " . $e->getMessage());
+        //     return response()->json([
+        //         'error' => $e->getMessage(),
+        //     ], 500);
+        // }
+        
+        
     }
 }
