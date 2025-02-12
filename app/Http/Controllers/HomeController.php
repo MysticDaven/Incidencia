@@ -12,18 +12,18 @@ class HomeController extends Controller
     public function ingresarRangos () {
         $actualYear = date('Y');
         $months = [
-            0 => 'Enero',
-            1 => 'Febrero',
-            2 => 'Marzo',
-            3 => 'Abril',
-            4 => 'Mayo',
-            5 => 'Junio',
-            6 => 'Julio',
-            7 => 'Agosto',
-            8 => 'Septiembre',
-            9 => 'Octubre',
-            10 => 'Noviembre',
-            11 => 'Diciembre'
+            1 => 'Enero',
+            2 => 'Febrero',
+            3 => 'Marzo',
+            4 => 'Abril',
+            5 => 'Mayo',
+            6 => 'Junio',
+            7 => 'Julio',
+            8 => 'Agosto',
+            9 => 'Septiembre',
+            10 => 'Octubre',
+            11 => 'Noviembre',
+            12 => 'Diciembre'
         ];
         $years = [];
         for ($i = 2016; $i <= $actualYear; $i++) {
@@ -76,9 +76,10 @@ class HomeController extends Controller
             'reporte' => 'required'
         ]);
         $rangos = session('rangos', []);
+        $rangos['reporte_anio'] = $rangos['reporte_anio'] - 3;
 
         $redirecciones = [
-            1 => 'redireccion 1',
+            1 => 'reporte.principalesDelitos',
             2 => 'redireccion 2',
             3 => 'redireccion 3',
             4 => 'redireccion 4',
@@ -99,7 +100,11 @@ class HomeController extends Controller
         ];
 
         if (array_key_exists($reporte['reporte'], $redirecciones)) {
-            return $redirecciones[$reporte['reporte']];
+            session([
+                'rangos' => $rangos,
+                'reporte' => $reporte
+            ]);
+            return redirect()->route($redirecciones[$reporte['reporte']]);
         } else {
             return 'No está';
         }

@@ -1,13 +1,8 @@
 <?php
 
-use App\Exports\AniosExport;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ReporteController;
-use App\Services\ExportService;
 use Illuminate\Support\Facades\Route;
-use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Files\TemporaryFileFactory;
-use PhpParser\Node\Stmt\TryCatch;
 
 Route::get('/', function () {
     return redirect()->route('home.ingresarRangos');
@@ -47,12 +42,8 @@ Route::post('/export-excel', [ReporteController::class, 'exportExcel']);
 //     }
 // });
 
-Route::get('/export-anio/{anio}', function ($anio, ExportService $exportService) {
-    try {
-        return $exportService->exportAnio($anio);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => $e->getMessage()
-        ], 500);
-    }
-});
+Route::get('/export-anio/{anio}', [ReporteController::class, 'exportAnio'])
+    ->name('reporte.exportAnio');
+
+Route::get('/reporte/export/', [ReporteController::class, 'exportPrincipalesDelitos'])
+    ->name('reporte.principalesDelitos');
