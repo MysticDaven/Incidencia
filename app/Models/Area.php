@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Anio extends Model
+class Area extends Model
 {
-    protected $table = 'ANIOS';
-    protected $primaryKey = 'idanio';
+    protected $table = 'AREAS';
+    protected $primaryKey = 'IDAREA';
     public $timestamps = false;
 }
