@@ -76,13 +76,13 @@ class HomeController extends Controller
             'reporte' => 'required'
         ]);
         $rangos = session('rangos', []);
-        $rangos['reporte_anio'] = $rangos['reporte_anio'] - 3;
+        $rangos['reporte_anio'] = $rangos['reporte_anio'];
 
         $redirecciones = [
             1 => 'reporte.principalesDelitos',
             2 => 'redireccion 2',
             3 => 'reporte.altoImpacto',
-            4 => 'redireccion 4',
+            4 => 'reporte.secuestros',
             5 => 'redireccion 5',
             6 => 'redireccion 6',
             7 => 'redireccion 7',

@@ -107,7 +107,7 @@ class PrincipalesDelitosExport implements WithEvents
 
         $mesInicial = $this->rangos['mes_inicial'];
         $mesFinal = $this->rangos['mes_final'];
-        $year = $this->rangos['reporte_anio'];
+        $year = $this->rangos['reporte_anio'] - 3;
 
         // Log::info('MES IN: ' . $mesInicial . ' MES FIN: ' . $mesFinal . ' AÑO: ' . $year);
 
@@ -411,10 +411,7 @@ class PrincipalesDelitosExport implements WithEvents
             ->get();
 
 
-        return $resultadosFinales;
-        // return response()->json($resultados, 200, [], JSON_UNESCAPED_UNICODE);
-        // return $resultados->toArray();
-                    
+        return $resultadosFinales;                    
     }
 
     public static function writeCell ($value, $indice, $cell, $sheet) {
