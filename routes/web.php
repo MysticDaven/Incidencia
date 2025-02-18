@@ -45,5 +45,56 @@ Route::post('/export-excel', [ReporteController::class, 'exportExcel']);
 Route::get('/export-anio/{anio}', [ReporteController::class, 'exportAnio'])
     ->name('reporte.exportAnio');
 
-Route::get('/reporte/export/', [ReporteController::class, 'exportPrincipalesDelitos'])
+Route::get('/reporte/export/delitos', [ReporteController::class, 'exportPrincipalesDelitos'])
     ->name('reporte.principalesDelitos');
+
+Route::get('/reporte/export/delitos_mes/', [ReporteController::class, 'exportPrincipalesDelitosMes'])
+    ->name('reporte.principalesDelitosMes');
+
+Route::get('/reporte/export/alto_impacto', [ReporteController::class, 'exportAltoImpacto'])    
+    ->name('reporte.altoImpacto');
+
+Route::get('/reporte/export/secuestros/', [ReporteController::class, 'exportSecuestros'])
+    ->name('reporte.secuestros');
+
+Route::get('/reporte/export/extorsiones/', [ReporteController::class, 'exportExtorsiones'])
+    ->name('reporte.extorsiones');
+
+Route::get('/reporte/export/homicidios/', [ReporteController::class, 'exportHomicidios'])
+    ->name('reporte.homicidios');
+
+Route::get('/reporte/export/privacion/', [ReporteController::class, 'exportPrivacion'])
+    ->name('reporte.privacion');
+
+Route::get('/reporte/export/lesiones/', [ReporteController::class, 'exportLesiones'])
+    ->name('reporte.lesiones');
+
+Route::get('/reporte/export/robo_modalidad/', [ReporteController::class, 'exportRoboModalidad'])
+    ->name('reporte.roboModalidad');
+
+Route::get('/reporte/export/informativo/', [ReporteController::class, 'exportInformativo'])
+    ->name('reporte.informativo');
+
+Route::get('/reporte/export/incremento/', [ReporteController::class, 'exportIncremento'])
+    ->name('reporte.incremento');
+
+Route::get('/reporte/export/incidencia/', [ReporteController::class, 'exportIncidencia'])
+    ->name('reporte.incidencia');
+
+Route::get('/reporte/export/delitos_modalidad/', [ReporteController::class, 'exportDelitosModalidad'])
+    ->name('reporte.delitosModalidad');
+
+Route::get('/reporte/export/trata_personas/', [ReporteController::class, 'exportTrata'])
+    ->name('reporte.trata');
+
+Route::get('/reporte/export/feminicidios/', [ReporteController::class, 'exportFeminicidios'])
+    ->name('reporte.feminicidios');
+
+Route::get('/reporte/export/informativo_acumulado/', [ReporteController::class, 'exportInformativoAcumulado'])
+    ->name('reporte.informativoAcumulado');
+
+Route::get('/reporte/export/robo_modalidad_mes/', [ReporteController::class, 'exportRoboModalidadMes'])
+    ->name('reporte.roboModalidadMes');
+
+Route::get('/reporte/export/graficas/', [ReporteController::class, 'exportGraficas'])
+    ->name('reporte.graficas');
