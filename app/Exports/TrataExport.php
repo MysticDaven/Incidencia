@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 use App\DelitosTrait;
+use App\Models\AveMunicipio;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -31,10 +33,93 @@ class TrataExport implements WithEvents
     }
 
     public function beforeWriting (BeforeWriting $event) {
-        $templatePath = storage_path('app/templates/3.-Alto_Impacto.xlsm');
+        $templatePath = storage_path('app/templates/5.-EXTORSIONES.xlsm');
         if (file_exists($templatePath)) {
+            $headers = [
+                0 => [
+                    'fisc' => 'APATZINGÁN',
+                    'c' => 'B'
+                ],
+                1 => [
+                    'fisc' => 'LÁZARO CÁRDENAS',
+                    'c' => 'E'
+                ],
+                2 => [
+                    'fisc' => 'MORELIA',
+                    'c' => 'H'
+                ],
+                3 => [
+                    'fisc' => 'URUAPAN',
+                    'c' => 'K'
+                ],
+                4 => [
+                    'fisc' => 'LA PIEDAD',
+                    'c' => 'N'
+                ],
+                5 => [
+                    'fisc' => 'ZAMORA',
+                    'c' => 'Q'
+                ],
+                6 => [
+                    'fisc' => 'ZITÁCUARO',
+                    'c' => 'T'
+                ],
+                7 => [
+                    'fisc' => 'COALCOMAN',
+                    'c' => 'W'
+                ],
+                8 => [
+                    'fisc' => 'HUETAMO',
+                    'c' => 'Z'
+                ],
+                9 => [
+                    'fisc' => 'JIQUILPAN',
+                    'c' => 'AC'
+                ]                
+            ];
+
             $spreadsheet = IOFactory::load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
+
+            $mesInicial = $this->rangos['mes_inicial'];
+            $mesFinal = $this->rangos['mes_final'];
+            $year = $this->rangos['reporte_anio'];
+
+            $sheet->setCellValue('B8', $year - 2);
+            $sheet->setCellValue('C8', $year - 1);
+            $sheet->setCellValue('D8', $year);
+
+            $cad2 = $year - 2 . ' - ' . $year - 1 . ' - ' . $year;
+            $cad = ($mesInicial == $mesFinal) ? self::MONTH[$mesInicial - 1] : self::MONTH[$mesInicial - 1 ] . ' - ' . self::MONTH[$mesFinal - 1];
+            $title = $cad . ' - ' . $cad2;
+            $sheet->setCellValue('A5', $title);
+            $sheet->setCellValue('A4', 'TRATA DE PERSONAS POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADOS EN EL ESTADO');
+
+            $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
+
+            foreach ($headers as $header) {
+                $dataFiscalia = $resultados->where('SUBPRO', $header['fisc']);
+                foreach ($dataFiscalia as $data) {
+                    if ($data->{'ANIO'} == $year - 2) {
+                        $column = $header['c'];
+                        $row = (8 + $data->{'MES'});
+                        $value = $data->{'CANTIDAD'};
+                        $this->writeCell($value, $column, $row, 0, $sheet);
+                    }
+                    else if ($data->{'ANIO'} == $year - 1) {
+                        $column = $header['c'];
+                        $row = (8 + $data->{'MES'});
+                        $value = $data->{'CANTIDAD'};
+                        $this->writeCell($value, $column, $row, 1, $sheet);
+                    }
+                    else if ($data->{'ANIO'} == $year) {
+                        $column = $header['c'];
+                        $row = (8 + $data->{'MES'});
+                        $value = $data->{'CANTIDAD'};
+                        $this->writeCell($value, $column, $row, 2, $sheet);
+                    }                    
+                } 
+            }
 
             $temporaryFile = $this->temporaryFile->makeLocal();
             IOFactory::createWriter($spreadsheet, 'Xlsx')->save($temporaryFile->getLocalPath());
@@ -47,4 +132,31 @@ class TrataExport implements WithEvents
         }
     }
 
+    public function realizarConsulta ($year, $mesInicial, $mesFinal) {
+        $delitosCategorizados = AveMunicipio::join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
+            ->join('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'm.IDSUBPRO2')
+            ->select(
+                'sb.SUBPRO',
+                DB::raw("'TRATA' as Trata"),
+                'AVE_MUNICIPIOS.ANIO',
+                'AVE_MUNICIPIOS.MES',
+                DB::raw('SUM(AVE_MUNICIPIOS.CANTIDAD) as CANTIDAD')
+            )
+            ->whereBetween('AVE_MUNICIPIOS.ANIO', [$year - 2, $year])
+            ->whereBetween('AVE_MUNICIPIOS.MES', [$mesInicial, $mesFinal])
+            ->whereIn('AVE_MUNICIPIOS.IDDELITO', self::TRATA_PERSONAS)
+            ->groupBy('sb.SUBPRO', 'AVE_MUNICIPIOS.ANIO', 'AVE_MUNICIPIOS.MES')
+            ->get();
+
+        return $delitosCategorizados;
+    }
+
+    public function writeCell ($value, $column, $row, $sum, $sheet) {
+        $columnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($column);
+        $nextColumnIndex = $columnIndex + $sum;
+        $nextColumn =  \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($nextColumnIndex);
+
+        $cell = $nextColumn . $row;
+        $sheet->setCellValue($cell, $value);        
+    }
 }
