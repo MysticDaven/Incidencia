@@ -4,6 +4,8 @@ namespace App;
 
 trait DelitosTrait
 {
+    const MONTH = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+    
     const ROBOS = ['182A','182B','182C','182D','182E','182F','182G','182L','182K','182H','182I','182J','181K','181L','181M','181N','181O','181P','181Q',
     '181R','181S','181T','181U','181V','181W','181X','181Y','181Z','2350','1811','1812','1815','1816','1817','1818','1819','181A','181B',
     '181C','181D','181E','181F','181G','181H','181I','181J'];
