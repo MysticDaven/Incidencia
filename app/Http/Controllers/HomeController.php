@@ -95,7 +95,7 @@ class HomeController extends Controller
             14 => 'redireccion 14',
             15 => 'redireccion 15',
             16 => 'reporte.trata',
-            17 => 'redireccion 17',
+            17 => 'reporte.feminicidios',
             18 => 'redireccion 18'
         ];
 
