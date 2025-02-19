@@ -8,6 +8,7 @@ use App\Exports\DelitosModalidadExport;
 use App\Exports\ExtorsionesExport;
 use App\Exports\FeminicidiosExport;
 use App\Exports\GraficasExport;
+use App\Exports\HomicidiosComparativoExport;
 use App\Exports\HomicidiosExport;
 use App\Exports\IncidenciaExport;
 use App\Exports\IncrementoExport;
@@ -83,7 +84,12 @@ class ExportService
 
     public function exportHomicidios ($rangos, $reporte) {
         $export = new HomicidiosExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-HOMICIDIOS.xlsm');
+        return Excel::download($export, 'PRUEBA-HOMICIDIOS.xlsx');
+    }
+
+    public function exportHomicidiosComparativo ($rangos, $reporte) {
+        $export = new HomicidiosComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
+        return Excel::download($export, 'PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm');
     }
 
     public function exportPrivacion ($rangos, $reporte) {

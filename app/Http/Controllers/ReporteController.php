@@ -91,12 +91,20 @@ class ReporteController extends Controller
     public function exportHomicidios (ExportService $exportService) {
         $rangos = session('rangos', []);
         $reporte = session('reporte', []);
+        // try {
+        //     return $exportService->exportHomicidios($rangos, $reporte);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'error' => $e->getMessage()
+        //     ], 500);
+        // }
+
         try {
-            return $exportService->exportHomicidios($rangos, $reporte);
+            return $exportService->exportHomicidiosComparativo($rangos, $reporte);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
-            ], 500);
+            ], 500);            
         }
     }
 
