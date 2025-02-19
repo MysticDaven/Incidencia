@@ -84,7 +84,7 @@ class HomeController extends Controller
             3 => 'reporte.altoImpacto',
             4 => 'reporte.secuestros',
             5 => 'reporte.extorsiones',
-            6 => 'redireccion 6',
+            6 => 'reporte.homicidios',
             7 => 'reporte.privacion',
             8 => 'redireccion 8',
             9 => 'redireccion 9',
