@@ -99,25 +99,17 @@ class PrivacionExport implements WithEvents
 
             foreach ($headers as $header) {
                 $dataFiscalia = $resultados->where('SUBPRO', $header['fisc']);
-                foreach ($dataFiscalia as $data) {
-                    if ($data->{'ANIO'} == $year - 2) {
-                        $column = $header['c'];
-                        $row = (8 + $data->{'MES'});
-                        $value = $data->{'CANTIDAD'};
-                        $this->writeCell($value, $column, $row, 0, $sheet);
+                if (count($dataFiscalia) > 0) {
+                    foreach ($dataFiscalia as $data) {
+                        $aniosDiferencia = $year - $data->{'ANIO'};
+                        
+                        if ($aniosDiferencia >= 0 && $aniosDiferencia <= 2) {
+                            $column = $header['c'];
+                            $row = (8 + $data->{'MES'});
+                            $value = $data->{'CANTIDAD'};
+                            $this->writeCell($value, $column, $row, self::I[$aniosDiferencia], $sheet);
+                        }
                     }
-                    else if ($data->{'ANIO'} == $year - 1) {
-                        $column = $header['c'];
-                        $row = (8 + $data->{'MES'});
-                        $value = $data->{'CANTIDAD'};
-                        $this->writeCell($value, $column, $row, 1, $sheet);
-                    }
-                    else if ($data->{'ANIO'} == $year) {
-                        $column = $header['c'];
-                        $row = (8 + $data->{'MES'});
-                        $value = $data->{'CANTIDAD'};
-                        $this->writeCell($value, $column, $row, 2, $sheet);
-                    }                    
                 }
             }
 
