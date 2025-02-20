@@ -157,6 +157,6 @@ class HomicidiosExport implements WithEvents
         $nextColumn =  \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($nextColumnIndex);
 
         $cell = $nextColumn . $row;
-        $sheet->setCellValue($cell, $value);        
+        $sheet->setCellValue($cell, $value);     
     }
 }
