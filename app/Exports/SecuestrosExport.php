@@ -110,11 +110,11 @@ class SecuestrosExport implements WithEvents
                     foreach ($dataFiscalia as $data) {
                         $aniosDiferencia = $year - $data->{'ANIO'};
                         
-                        if ($aniosDiferencia >= 0 && $aniosDiferencia <= 2) {
+                        if ($aniosDiferencia >= 0 && $aniosDiferencia <= 3) {
                             $column = $header['c'];
                             $row = (8 + $data->{'MES'});
                             $value = $data->{'CANTIDAD'};
-                            $this->writeCell($value, $column, $row, self::I[$aniosDiferencia], $sheet);
+                            $this->writeCell($value, $column, $row, self::I2[$aniosDiferencia], $sheet);
                         }
                     }
                 }

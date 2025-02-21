@@ -118,7 +118,7 @@ class PrincipalesDelitosExport implements WithEvents
                 $msg = 'INCIDENCIA DELICTIVA POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADA EN LA FISCALÍA DE ' . $fisc;
             }
             else if ($fisc == 'ESTADO DE MICHOACÁN') {
-                $msg = 'INCIDENCIA DELICTIVA POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN EN EL ' . $fisc;
+                $msg = 'INCIDENCIA DELICTIVA POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADA EN EL ' . $fisc;
             }
             else {
                 $msg = 'INCIDENCIA DELICTIVA POR AVERIGAUCIÓN PREVIA REGISTRADA EN LA FISCALÍA DE ' . $fisc;
@@ -272,7 +272,7 @@ class PrincipalesDelitosExport implements WithEvents
 
         $delitosCategorizados = AveMunicipio::join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
             ->join('DELITOS as d', 'AVE_MUNICIPIOS.IDDELITO', '=', 'd.IDDELITO')
-            ->join('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'm.IDSUBPRO2')
+            ->leftjoin('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'm.IDSUBPRO2')
             ->select(
                 'sb.SUBPRO',
                 DB::raw("

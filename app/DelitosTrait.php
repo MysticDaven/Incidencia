@@ -5,6 +5,8 @@ namespace App;
 trait DelitosTrait
 {
     const I = [2,1,0];
+
+    const I2 = [3,2,1,0];
     
     const MONTH = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
     

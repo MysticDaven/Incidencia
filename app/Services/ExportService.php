@@ -14,6 +14,7 @@ use App\Exports\IncidenciaExport;
 use App\Exports\IncrementoExport;
 use App\Exports\InformativoAcumuladoExport;
 use App\Exports\InformativoExport;
+use App\Exports\LesionesComparativoExport;
 use App\Exports\LesionesExport;
 use App\Exports\PrincipalesDelitosExport;
 use App\Exports\PrincipalesDelitosMesExport;
@@ -102,6 +103,12 @@ class ExportService
         return Excel::download($export, 'PRUEBA-LESIONES.xlsx');
     }
 
+
+    public function exportLesionesComparativo ($rangos, $reporte) {
+        $export = new LesionesComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
+        return Excel::download($export, 'PRUEBA-LESIONES-COMPARATIVO.xlsm');
+    }    
+        
     public function exportRoboModalidad ($rangos, $reporte) {
         $export = new RoboModalidadExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-ROBO-MODALIDAD.xlsm');
