@@ -99,7 +99,7 @@ class ExportService
 
     public function exportLesiones ($rangos, $reporte) {
         $export = new LesionesExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-LESIONES.xlsm');
+        return Excel::download($export, 'PRUEBA-LESIONES.xlsx');
     }
 
     public function exportRoboModalidad ($rangos, $reporte) {

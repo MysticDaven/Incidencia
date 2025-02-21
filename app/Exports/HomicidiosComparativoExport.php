@@ -120,8 +120,8 @@ class HomicidiosComparativoExport implements WithEvents
                 }
             }
 
-            Log::info('------------RESULTADOS--------------');
-            Log::info($resultados);
+            // Log::info('------------RESULTADOS--------------');
+            // Log::info($resultados);
 
             $temporaryFile = $this->temporaryFile->makeLocal();
             IOFactory::createWriter($spreadsheet, 'Xlsx')->save($temporaryFile->getLocalPath());
