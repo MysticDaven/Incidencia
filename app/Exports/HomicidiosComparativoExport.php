@@ -85,7 +85,7 @@ class HomicidiosComparativoExport implements WithEvents
                 'CULPOSO' => 14,
                 'CULPOSO AB' => 15,
                 'CULPOSO AF' => 16
-            ] ;
+            ];
             $spreadsheet = IOFactory::load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
 

@@ -123,13 +123,21 @@ class ReporteController extends Controller
     public function exportLesiones (ExportService $exportService) {
         $rangos = session('rangos', []);
         $reporte = session('reporte', []);
+        // try {
+        //     return $exportService->exportLesiones($rangos, $reporte);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'error' => $e->getMessage()
+        //     ], 500);
+        // }
+
         try {
-            return $exportService->exportLesiones($rangos, $reporte);
+            return $exportService->exportLesionesComparativo($rangos, $reporte);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
-        }
+        }        
     }
 
     public function exportRoboModalidad (ExportService $exportService) {
