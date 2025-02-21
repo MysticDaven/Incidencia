@@ -133,8 +133,7 @@ class TrataExport implements WithEvents
     }
 
     public function realizarConsulta ($year, $mesInicial, $mesFinal) {
-        $delitosCategorizados = AveMunicipio::join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
-            ->join('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'm.IDSUBPRO2')
+        $delitosCategorizados = AveMunicipio::join('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'AVE_MUNICIPIOS.IDSUBPRO')
             ->select(
                 'sb.SUBPRO',
                 DB::raw("'TRATA' as Trata"),
