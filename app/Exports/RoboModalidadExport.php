@@ -106,9 +106,6 @@ class RoboModalidadExport implements WithEvents
                             $value = $data->{'CANTIDAD'};
                             $this->writeCell($value, $c, $row, self::I2[$anios], $sheet);
                         }
-                        else {
-                            Log::info('FISCALIA: ' . $header['fisc'] . ' YEAR: ' . $data->{'ANIO'} . ' ANIO: ' . $anios);
-                        }
                     }
                 }
             }
