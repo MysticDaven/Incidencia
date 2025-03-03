@@ -92,8 +92,8 @@ class RoboModalidadMesExport implements WithEvents
             $sheet->setCellValue('A4', $period);
 
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
-            Log::info('-------------------RESULTADOS-------------');
-            Log::info($resultados);
+            // Log::info('-------------------RESULTADOS-------------');
+            // Log::info($resultados);
 
             $c = 'b';
             foreach ($headers as $header) {
