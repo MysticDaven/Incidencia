@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\DelitosTrait;
-use App\Models\Anio;
 use App\Models\AveMunicipio;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +18,7 @@ class PrincipalesDelitosExport implements WithEvents
     protected $temporaryFile;    
     protected $meses = [ 1 => 'ENERO', 2 => 'FEBRERO', 3 => 'MARZO', 4 => 'ABRIL', 5 => 'MAYO', 6 => 'JUNIO', 7 => 'JULIO', 8 => 'AGOSTO', 9 => 'SEPTIEMBRE', 10 => 'OCTUBRE', 11 => 'NOVIEMBRE', 12 => 'DICIEMBRE' ];
     protected $fiscalias =  ["ESTADO DE MICHOACÁN", "APATZINGÁN", "LÁZARO CÁRDENAS", "MORELIA", "URUAPAN", "LA PIEDAD", "ZAMORA", "ZITÁCUARO","COALCOMAN","HUETAMO","JIQUILPAN"];
-    protected $delitos = ['ROBO', 'ROBO DE VEHÍCULO', 'LESIONES DOLOSAS', 'HOMICIDIO CULPOSO', 'NARCOMENUDEO', 'VIOLENCIA FAMILIAR', 'LESIONES CULPOSAS', 'RECEPTACIÓN', 'HOMICIDIO DOLOSO', 'DAÑO CULPOSO', 'DAÑO DOLOSO', 'FRAUDE', 'AMENAZAS', 'DESPOJO', 'VIOLACION', 'ABIGEATO', 'ABUSO SEXUAL', 'PRIVACION DE LA LIBERTAD', 'ABUSO DE AUTORIDAD', 'FALSIFICACION DE DOCUMENTOS', 'ABUSO DE CONFIANZA', 'ALLANAMIENTO DE MORADA', 'OBLIGACION ALIMENTARIA', 'SUSTRACCION DE PERSONA', 'DELITOS ECOLOGIA', 'ARMAS PROHIBIDAS', 'ESTUPRO', 'EXTORSION', 'HOSTIGAMIENTO SEXUAL', 'CONDUCTORES DE VEHICULOS', 'SECUESTRO', 'TRATA DE PERSONAS', 'TURISMO SEXUAL', 'OTRO DELITO'] ;
+    protected $delitos = ['ROBO', 'ROBO DE VEHÍCULO', 'LESIONES DOLOSAS', 'HOMICIDIO CULPOSO', 'NARCOMENUDEO', 'VIOLENCIA FAMILIAR', 'LESIONES CULPOSAS', 'RECEPTACIÓN', 'HOMICIDIO DOLOSO', 'DAÑO CULPOSO', 'DAÑO DOLOSO', 'FRAUDE', 'AMENAZAS', 'DESPOJO', 'VIOLACIÓN', 'ABIGEATO', 'ABUSO SEXUAL', 'PRIVACION DE LA LIBERTAD', 'ABUSO DE AUTORIDAD', 'FALSIFICACION DE DOCUMENTOS', 'ABUSO DE CONFIANZA', 'ALLANAMIENTO DE MORADA', 'OBLIGACION ALIMENTARIA', 'SUSTRACCION DE PERSONA', 'DELITOS ECOLOGIA', 'ARMAS PROHIBIDAS', 'ESTUPRO', 'EXTORSION', 'HOSTIGAMIENTO SEXUAL', 'CONDUCTORES DE VEHICULOS', 'SECUESTRO', 'TRATA DE PERSONAS', 'TURISMO SEXUAL', 'OTRO DELITO'] ;
 
     public function __construct($rangos, $reporte, $temporaryFile)
     {
@@ -43,57 +42,68 @@ class PrincipalesDelitosExport implements WithEvents
             0 => [
                 'inicio' => 8,
                 'h1' => 'A4',
-                'h2' => 'A3'
+                'h2' => 'A3',
+                'fisc' => 'ESTADO DE MICHOACAN'
             ],
             1 => [
                 'inicio' => 53,
                 'h1' => 'A49',
-                'h2' => 'A48'
+                'h2' => 'A48',
+                'fisc' => 'APATZINGÁN'
             ],
             2 => [
                 'inicio' => 97,
                 'h1' => 'A93',
-                'h2' => 'A92'
+                'h2' => 'A92',
+                'fisc' => 'LÁZARO CÁRDENAS'
             ],
             3 => [
                 'inicio' => 141,
                 'h1' => 'A137',
-                'h2' => 'A136'
+                'h2' => 'A136',
+                'fisc' => 'MORELIA'
             ],
             4 => [
                 'inicio' => 185,
                 'h1' => 'A181',
-                'h2' => 'A180'
+                'h2' => 'A180',
+                'fisc' => 'URUAPAN'
             ],
             5 => [
                 'inicio' => 229,
                 'h1' => 'A225',
-                'h2' => 'A224'
+                'h2' => 'A224',
+                'fisc' => 'LA PIEDAD'
             ],
             6 => [
                 'inicio' => 273,
                 'h1' => 'A269',
-                'h2' => 'A268'
+                'h2' => 'A268',
+                'fisc' => 'ZAMORA'
             ],
             7 => [
                 'inicio' => 317,
                 'h1' => 'A313',
-                'h2' => 'A312'
+                'h2' => 'A312',
+                'fisc' => 'ZITÁCUARO'
             ],
             8 => [
                 'inicio' => 361,
                 'h1' => 'A357',
-                'h2' => 'A356'
+                'h2' => 'A356',
+                'fisc' => 'COALCOMAN'
             ],
             9 => [
                 'inicio' => 405,
                 'h1' => 'A401',
-                'h2' => 'A400'
+                'h2' => 'A400',
+                'fisc' => 'HUETAMO'
             ],
             10 => [
                 'inicio' => 449,
                 'h1' => 'A445',
-                'h2' => 'A444'
+                'h2' => 'A444',
+                'fisc' => 'JIQUILPAN'
             ],    
         ];
 
@@ -147,59 +157,86 @@ class PrincipalesDelitosExport implements WithEvents
             //     $this->realizarConsulta($year, $mesInicial, $mesFinal, $header['inicio'], $sheet);
             // }     
             $i++;        
+        }        
+
+        $tipo = false; //Dependiendo de este valor se ejecuta un método u otro. Se hicieron pruebas de optimización, pero se quedan ambos por si en algún momento se debe intercambiar.
+        if ($tipo) {
+            $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
+            $h = 0;         
+            foreach ($this->fiscalias as $fiscalia) {
+                $inicio = $headers[$h]['inicio'];
+                $dataFiscalia = $resultados->where('SUBPRO', $fiscalia)->values()->toArray();
+                $i = 0;
+                foreach ($this->delitos as $delito) {
+                    if ($dataFiscalia[$i]->Delito == $delito) {
+                        $value = $dataFiscalia[$i]->{$year};
+                        $this->writeCell($value, 0, $inicio, $sheet);
+                        $value = $dataFiscalia[$i]->{$year + 1};
+                        $this->writeCell($value, 1, $inicio, $sheet);
+                        $value = $dataFiscalia[$i]->{$year + 2};
+                        $this->writeCell($value, 2, $inicio, $sheet);
+                        $value = $dataFiscalia[$i]->{$year + 3};
+                        $this->writeCell($value, 3, $inicio, $sheet);
+                        $i++;
+                        $inicio++;
+                    }                
+                    else {
+                        $value = 0;
+                        $this->writeCell($value, 0, $inicio, $sheet);
+                        $this->writeCell($value, 1, $inicio, $sheet);
+                        $this->writeCell($value, 2, $inicio, $sheet);
+                        $this->writeCell($value, 3, $inicio, $sheet);
+                        $inicio++;
+                    }
+                }
+                $h++;
+            }
         }
-        $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
-
-        // Log::info('--------RESULTADOS------------');
-        // Log::info($resultados);
-
-        // $resultados = response()->json($resultados, 200, [], JSON_UNESCAPED_UNICODE);
-        // $datos = json_decode(json_encode($resultados->original, JSON_UNESCAPED_UNICODE), true); // Convertir a array
-
-        // Log::info('RES: ' . json_encode($datos, JSON_UNESCAPED_UNICODE)); 
-
-        // if (isset($datos[0])) {
-        //     Log::info('RES apatzingan, creo: ' . json_encode($datos[0], JSON_UNESCAPED_UNICODE)); // Ahora sí mostrará el primer elemento
-        //     Log::info($datos[0]['SUBPRO']);
-        // }
-
-        // $apatzingan = $datos->where('SUBPRO', 'APATZINGÁN');
-        // Log::info('--------APATZINGAN------------');
-        // Log::info($apatzingan);
-
-        $h = 0;        
-        // array_shift($this->fiscalias);        
-        foreach ($this->fiscalias as $fiscalia) {
-            $inicio = $headers[$h]['inicio'];
-            // Log::info($fiscalia);
-            $dataFiscalia = $resultados->where('SUBPRO', $fiscalia)->values()->toArray();
-            // Log::info($dataFiscalia);
-            $i = 0;
-            foreach ($this->delitos as $delito) {
-                if ($dataFiscalia[$i]->Delito == $delito) {
-                    $value = $dataFiscalia[$i]->{$year};
-                    $this->writeCell($value, 0, $inicio, $sheet);
-                    $value = $dataFiscalia[$i]->{$year + 1};
-                    $this->writeCell($value, 1, $inicio, $sheet);
-                    $value = $dataFiscalia[$i]->{$year + 2};
-                    $this->writeCell($value, 2, $inicio, $sheet);
-                    $value = $dataFiscalia[$i]->{$year + 3};
-                    $this->writeCell($value, 3, $inicio, $sheet);
-                    $i++;
-                    $inicio++;
-                }                
+        else{
+            $year += 3;
+            $resultados = $this->realizarConsultaOp($year, $mesInicial, $mesFinal, 1);
+            //Log::info('------------------RESULTADOS TOTAL-------------------' . $year);
+            Log::info($resultados);
+            $c = 'c';
+            foreach ($resultados as $data) {
+                $anios = $year - $data->{'ANIO'};
+                if ($anios >= 0 && $anios <= 3) {
+                    Log::info($data->{'Delito'});
+                    $row = $headers[0]['inicio'] + array_search($data->{'Delito'}, $this->delitos);
+                    $value = $data->{'CANTIDAD'};
+                    if ($data->{'Delito'} == 'ROBO') {
+                        Log::info($value . ' ' . $c . ' ' . $row . ' ' .  ' ' . self::I2[$anios]);
+                        
+                    }
+                    $this->writeCellOp($value, $c, $row, self::I2[$anios], $sheet);
+                }
                 else {
-                    $value = 0;
-                    $this->writeCell($value, 0, $inicio, $sheet);
-                    $this->writeCell($value, 1, $inicio, $sheet);
-                    $this->writeCell($value, 2, $inicio, $sheet);
-                    $this->writeCell($value, 3, $inicio, $sheet);
-                    $inicio++;
+                    Log::info('NO ENTRA ' . $anios);
                 }
             }
-            $h++;
-        }
 
+            $resultados = $this->realizarConsultaOp($year, $mesInicial, $mesFinal, 0);
+            //Log::info('------------------RESULTADOS FISCALIA-------------------');
+            //Log::info($resultados);
+            array_shift($headers);
+            $c = 'c';
+            foreach ($headers as $header) {
+                $dataFiscalia = $resultados->where('SUBPRO', $header['fisc']);
+                if (count($dataFiscalia) > 0) {
+                    foreach ($dataFiscalia as $data) {
+                        $anios = $year - $data->{'ANIO'};
+                        if ($anios >= 0 && $anios <= 3) {
+                            $row = $header['inicio'] + array_search($data->{'Delito'}, $this->delitos);
+                            $value = $data->{'CANTIDAD'};
+                            $this->writeCellOp($value, $c, $row, self::I2[$anios], $sheet);
+                        }
+                        else {
+                            Log::info('NO ENTRA ' . $anios);
+                        }
+                    }
+                } 
+            }
+        }
 
         $temporaryFile = $this->temporaryFile->makeLocal();
         IOFactory::createWriter($spreadsheet, 'Xlsx')->save($temporaryFile->getLocalPath());
@@ -208,8 +245,7 @@ class PrincipalesDelitosExport implements WithEvents
         $event->writer->getSheetByIndex(0);
     }
 
-    public function realizarConsulta ($year, $mesInicial, $mesFinal) { //$year, $mesInicial, $mesFinal, $cell, $sheet
-        // Log::info('ENTRAS A REALIZAR CONSULTA');
+    public function realizarConsulta ($year, $mesInicial, $mesFinal) {
         $delitos = [
             "ROBO" => implode("','", self::ROBOS),
             "ROBO DE VEHÍCULO" => implode("','", self::ROBO_VEHICULO),
@@ -246,29 +282,6 @@ class PrincipalesDelitosExport implements WithEvents
             "TURISMO SEXUAL" => implode("','", self::TURISMO_SEXUAL),
             "RESTO DE DELITOS" => implode("','", self::RESTO_DELITOS) 
         ];        
-
-        // foreach ($delitos as $delito => $ids) {
-        //     $sheet->SetCellValue('B'.($cell - 1), $delito);
-        //     $auxYear = $year;
-        //     $indice = 0;
-
-        //     for ($i = 0; $i <= 3; $i++) {
-        //         $cantidad = AveMunicipio::leftJoin('DELITOS', 'AVE_MUNICIPIOS.IDDELITO', '=', 'DELITOS.IDDELITO')
-        //             ->join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
-        //             ->where('anio', $auxYear)
-        //             ->whereBetween('AVE_MUNICIPIOS.MES', [$mesInicial, $mesFinal])
-        //             ->where('m.IDSUBPRO2', 1)
-        //             ->where('DELITOS.ESTATUS', 1)
-        //             ->whereIn('AVE_MUNICIPIOS.IDDELITO', $ids) // Usamos la variable global
-        //             ->sum('CANTIDAD');
-        //         Log::info('LA CANTIDAD: ' . $cantidad);
-        //         $this->writeCell($cantidad, $indice, $cell, $sheet);
-        //         $auxYear++;
-        //         //$cell++;
-        //         $indice++;
-        //     }
-        //     $cell++;
-        // }
 
         $delitosCategorizados = AveMunicipio::join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
             ->join('DELITOS as d', 'AVE_MUNICIPIOS.IDDELITO', '=', 'd.IDDELITO')
@@ -354,25 +367,8 @@ class PrincipalesDelitosExport implements WithEvents
             )        
             ->whereBetween('AVE_MUNICIPIOS.ANIO', [$year, $year+3])
             ->whereBetween('AVE_MUNICIPIOS.MES', [$mesInicial, $mesFinal])
-            ->where('d.ESTATUS', 1);
-                
-        // $resultados = DB::query()
-        //     ->fromSub($delitosCategorizados, 'DelitosCategorizados')
-        //     ->select(
-        //         'SUBPRO',
-        //         'Delito',
-        //         DB::raw("SUM(CASE WHEN ANIO = 2018 THEN CANTIDAD ELSE 0 END) AS [2018]"),
-        //         DB::raw("SUM(CASE WHEN ANIO = 2019 THEN CANTIDAD ELSE 0 END) AS [2019]"),
-        //         DB::raw("SUM(CASE WHEN ANIO = 2020 THEN CANTIDAD ELSE 0 END) AS [2020]"),
-        //         DB::raw("SUM(CASE WHEN ANIO = 2021 THEN CANTIDAD ELSE 0 END) AS [2021]")
-        //     )
-        //     ->groupBy('SUBPRO', 'Delito', 'OrdenDelito')
-        //     ->orderBy('SUBPRO')
-        //     //->orderBy('Delito')
-        //     ->orderBy('OrdenDelito')
-        //     ->get();  
+            ->where('d.ESTATUS', 1);            
             
-        //---------------------------------------------------------------------------------------------------------------------------
         $resultados = DB::query()
         ->fromSub($delitosCategorizados, 'DelitosCategorizados')
         ->select(
@@ -410,9 +406,107 @@ class PrincipalesDelitosExport implements WithEvents
             ->orderBy('OrdenDelito')
             ->get();
 
-
         return $resultadosFinales;                    
     }
+
+    public function realizarConsultaOp($year, $mesInicial, $mesFinal, $value) {
+        $delitosCategorias = [
+            'ROBO' => ['182A','182B','182C','182D','182E','182F','182G','182L','182K','182H','182I','182J','181K','181L','181M','181N','181O','181P','181Q','181R','181S','181T','181U','181V','181W','181X','181Y','181Z','2350','1811','1812','1815','1816','1817','1818','1819','181A','181B','181C','181D','181E','181F','181G','181H','181I','181J'],
+            'ROBO DE VEHÍCULO' => ['1814'],
+            'LESIONES DOLOSAS' => ['1622','1633','1628','1629','1631','1632','1637','1638','1639','1624'],
+            'HOMICIDIO CULPOSO' => ['161J','1613','1615','1616','161A','161B','161E'],
+            'NARCOMENUDEO' => ['2311', '2312'],
+            'VIOLENCIA FAMILIAR' => ['1160'],
+            'LESIONES CULPOSAS' => ['1625','1626','1627','1623'],
+            'RECEPTACIÓN' => ['1820'],
+            'HOMICIDIO DOLOSO' => ['161K','161L','1618','161C','161D','161H','161I','1671','1612','1614','1619','1617','161G'],
+            'DAÑO CULPOSO' => ['1884','1894','1885','1883'],
+            'DAÑO DOLOSO' => ['1881', '1882'],
+            'FRAUDE' => ['1853','1854','1855','2510','1850'],
+            'AMENAZAS' => ['1340', '1341'],
+            'DESPOJO' => ['1872','1873','1870'],
+            'VIOLACIÓN' => ['1412','1413','1410'],
+            'ABIGEATO' => ['1830'],
+            'ABUSO SEXUAL' => ['1432', '1430'],
+            'PRIVACION DE LA LIBERTAD' => ['1310'],
+            'ABUSO DE AUTORIDAD' => ['0771','0772','0770'],
+            'FALSIFICACION DE DOCUMENTOS' => ['0921','0922','0923','0924','0920','1835'],
+            'ABUSO DE CONFIANZA' => ['1841','1842','1840'],
+            'ALLANAMIENTO DE MORADA' => ['1370','1372'],
+            'OBLIGACION ALIMENTARIA' => ['1140'],
+            'SUSTRACCION DE PERSONA' => ['1150'],
+            'DELITOS ECOLOGIA' => ['2111', '2112', '2113', '2110', '2240'],
+            'ARMAS PROHIBIDAS' => ['0230'],
+            'ESTUPRO' => ['1420'],
+            'EXTORSION' => ['1350'],
+            'HOSTIGAMIENTO SEXUAL' => ['1431'],
+            'CONDUCTORES DE VEHICULOS' => ['0321', '0320'],
+            'SECUESTRO' => ['1322', '1323', '1324', '1325', '1326', '1327', '2631', '2632', '2633', '1320', '1328', '1329'],
+            'TRATA DE PERSONAS' => ['0532'],
+            'TURISMO SEXUAL' => ['0552', '0550']
+        ];
+    
+        // Construcción del CASE para clasificar delitos
+        $caseDelitos = "CASE ";
+        foreach ($delitosCategorias as $categoria => $ids) {
+            $caseDelitos .= "WHEN AVE_MUNICIPIOS.IDDELITO IN ('" . implode("','", $ids) . "') THEN '$categoria' ";
+        }
+        $caseDelitos .= "ELSE 'OTRO DELITO' END";
+    
+        // Consulta optimizada
+        if ($value == 0) {
+            $delitos = AveMunicipio::leftJoin('DELITOS as d', 'AVE_MUNICIPIOS.IDDELITO', '=', 'd.IDDELITO')
+            ->join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
+            ->join('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'm.IDSUBPRO2')
+            ->whereBetween('AVE_MUNICIPIOS.ANIO', [$year - 3, $year])
+            ->whereBetween('AVE_MUNICIPIOS.MES', [$mesInicial, $mesFinal])
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('DELITOS AS d')
+                    ->whereColumn('d.IDDELITO', 'AVE_MUNICIPIOS.IDDELITO')
+                    ->where('d.ESTATUS', 1);
+            })
+            ->select(
+                'sb.SUBPRO',
+                DB::raw("$caseDelitos AS Delito"),
+                'AVE_MUNICIPIOS.ANIO',
+                DB::raw('SUM(AVE_MUNICIPIOS.CANTIDAD) AS CANTIDAD')
+            )
+            ->groupBy(
+                'sb.SUBPRO',
+                'AVE_MUNICIPIOS.ANIO',
+                DB::raw($caseDelitos)
+            )
+            ->get();
+        }
+        else {
+            $delitos = AveMunicipio::leftJoin('DELITOS as d', 'AVE_MUNICIPIOS.IDDELITO', '=', 'd.IDDELITO')
+            ->join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
+            ->join('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'm.IDSUBPRO2')
+            ->whereBetween('AVE_MUNICIPIOS.ANIO', [$year - 3, $year])
+            ->whereBetween('AVE_MUNICIPIOS.MES', [$mesInicial, $mesFinal])
+            ->whereExists(function ($query) {
+                $query->select(DB::raw(1))
+                    ->from('DELITOS AS d')
+                    ->whereColumn('d.IDDELITO', 'AVE_MUNICIPIOS.IDDELITO')
+                    ->where('d.ESTATUS', 1);
+            })
+            ->select(
+                //'sb.SUBPRO',
+                DB::raw("$caseDelitos AS Delito"),
+                'AVE_MUNICIPIOS.ANIO',
+                DB::raw('SUM(AVE_MUNICIPIOS.CANTIDAD) AS CANTIDAD')
+            )
+            ->groupBy(
+                //'sb.SUBPRO',
+                'AVE_MUNICIPIOS.ANIO',
+                DB::raw($caseDelitos)
+            )
+            ->get();            
+        }
+        return $delitos;
+    }
+    
 
     public static function writeCell ($value, $indice, $cell, $sheet) {
         // Log::info('ENTRAS A WRITE');
@@ -421,4 +515,13 @@ class PrincipalesDelitosExport implements WithEvents
             $auxCell = $columns[$indice] . $cell;
             $sheet->SetCellValue($auxCell, $value);
     }
+
+    public function writeCellOp ($value, $column, $row, $sum, $sheet) {
+        $columnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($column);
+        $nextColumnIndex = $columnIndex + $sum;
+        $nextColumn =  \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($nextColumnIndex);
+
+        $cell = $nextColumn . $row;
+        $sheet->setCellValue($cell, $value);        
+    }    
 }

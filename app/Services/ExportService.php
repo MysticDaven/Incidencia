@@ -53,7 +53,7 @@ class ExportService
 
     public function exportPrincipalesDelitos ($rangos, $reporte) {
         $export = new PrincipalesDelitosExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA.xlsm');
+        return Excel::download($export, 'PRUEBA-PRINCIPALES-DELITOS.xlsm');
 
         
         // return response()->json([
