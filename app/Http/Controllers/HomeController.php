@@ -80,7 +80,7 @@ class HomeController extends Controller
 
         $redirecciones = [
             1 => 'reporte.principalesDelitos',
-            2 => 'redireccion 2',
+            2 => 'reporte.principalesDelitosMes',
             3 => 'reporte.altoImpacto',
             4 => 'reporte.secuestros',
             5 => 'reporte.extorsiones',
