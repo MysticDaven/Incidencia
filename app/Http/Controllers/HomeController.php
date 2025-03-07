@@ -96,7 +96,7 @@ class HomeController extends Controller
             15 => 'redireccion 15',
             16 => 'reporte.trata',
             17 => 'reporte.feminicidios',
-            18 => 'redireccion 18'
+            18 => 'reporte.graficas'
         ];
 
         if (array_key_exists($reporte['reporte'], $redirecciones)) {
