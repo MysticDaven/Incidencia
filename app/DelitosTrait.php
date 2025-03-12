@@ -54,6 +54,8 @@ trait DelitosTrait
 
     const AMENAZAS = ['1340', '1341'];
 
+    const AMENAZAS_V2 = ['1340'];
+
     const DESPOJO = ['1872','1873','1870'];
 
     const VIOLACION = ['1412','1413','1410'];
