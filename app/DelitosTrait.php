@@ -93,6 +93,8 @@ trait DelitosTrait
 
     const SECUESTRO = ['1322', '1323', '1324', '1325', '1326', '1327', '2631', '2632', '2633', '1320', '1328', '1329'];
 
+    const SECUESTRO_V2 = ['1324','1325','1326','2631','1320'];
+
     const TRATA_PERSONAS = ['0532'];
 
     const TURISMO_SEXUAL = ['0552', '0550'];

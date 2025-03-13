@@ -90,7 +90,7 @@ class HomeController extends Controller
             9 => 'reporte.roboModalidad',
             10 => 'reporte.roboModalidadMes',
             11 => 'reporte.informativo',
-            12 => 'redireccion 12',
+            12 => 'reporte.informativoAcumulado',
             13 => 'redireccion 13',
             14 => 'redireccion 14',
             15 => 'redireccion 15',
