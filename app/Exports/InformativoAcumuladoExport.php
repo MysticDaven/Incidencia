@@ -6,6 +6,7 @@ use App\DelitosTrait;
 use App\Models\AveMunicipio;
 use App\Models\Faltante;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use PhpOffice\PhpSpreadsheet\IOFactory;

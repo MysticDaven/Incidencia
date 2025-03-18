@@ -135,7 +135,7 @@ class GraficasExport implements WithEvents
             'HOMICIDIO_DOLOSO' => self::HOMICIDIO_DOLOSO_FEMINICIDIO,
             'TRATA_PERSONAS' => self::TRATA_PERSONAS,
             'NARCOMENUDEO' => self::NARCOMENUDEO,
-            'SECUESTRO' => self::SECUESTRO,
+            'SECUESTRO' => self::SECUESTRO_V2,
             'VIOLACION' => self::VIOLACION
         ];
         $robos = [
