@@ -161,7 +161,7 @@ class InformativoExport implements WithEvents
                 'EXTORSION' => self::EXTORSION,
                 'HOSTIGAMIENTO SEXUAL' => self::HOSTIGAMIENTO_SEXUAL,
                 'CONDUCTORES DE VEHICULOS' => self::CONDUCTORES_VEHICULOS,
-                'SECUESTRO' => self::SECUESTRO,
+                'SECUESTRO' => self::SECUESTRO_V2,
                 'TRATA DE PERSONAS' => self::TRATA_PERSONAS,
                 'TURISMO SEXUAL' => self::TURISMO_SEXUAL
             ];
