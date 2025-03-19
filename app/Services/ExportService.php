@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exports\AltoImpactoExport;
 use App\Exports\AniosExport;
+use App\Exports\DecrementoExport;
 use App\Exports\DelitosModalidadExport;
 use App\Exports\ExtorsionesExport;
 use App\Exports\FeminicidiosExport;
@@ -103,7 +104,6 @@ class ExportService
         return Excel::download($export, 'PRUEBA-LESIONES.xlsx');
     }
 
-
     public function exportLesionesComparativo ($rangos, $reporte) {
         $export = new LesionesComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-LESIONES-COMPARATIVO.xlsm');
@@ -123,6 +123,11 @@ class ExportService
         $export = new IncrementoExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-INCREMENTO.xlsm');
     }
+
+    public function exportDecremento ($rangos, $reporte) {
+        $export = new DecrementoExport($rangos, $reporte, $this->temporaryFileFactory);
+        return Excel::download($export, 'PRUEBA-DECREMENTO.xlsm');
+    }    
 
     public function exportIncidencia ($rangos, $reporte) {
         $export = new IncidenciaExport($rangos, $reporte, $this->temporaryFileFactory);
