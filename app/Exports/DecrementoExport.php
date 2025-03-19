@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class IncrementoExport implements WithEvents
+class DecrementoExport implements WithEvents
 {
     use DelitosTrait;
     protected $rangos;
@@ -20,7 +20,7 @@ class IncrementoExport implements WithEvents
     public function __construct($rangos, $reporte, $temporaryFile)
     {
         $this->rangos = $rangos;
-        $this->reporte = $reporte;
+        $this->reporte  = $reporte;
         $this->temporaryFile = $temporaryFile;
     }
 
@@ -100,7 +100,6 @@ class IncrementoExport implements WithEvents
             $sheet->setCellValue('C7', $year - 1);
             $sheet->setCellValue('D7', $year);
             $sheet->setCellValue('L3', 1);
-            $sheet->setCellValue('N3', 1);
 
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal, 0);
             $c = 'c';
@@ -111,7 +110,6 @@ class IncrementoExport implements WithEvents
                 if (count($dataFiscalia) > 0) {
                     $aux1 = 0;
                     $aux2 = 0;
-                    $i = 1;
                     foreach ($dataFiscalia as $data) {
                         $delitoRow = array_search($data->{'Delito'}, $delitos2);
                         if ($data->{'ANIO'} == $year - 1){
@@ -121,13 +119,11 @@ class IncrementoExport implements WithEvents
                             $aux2 = $data->{'CANTIDAD'};
                         }
                     }
-                    if ($aux1 < $aux2) {
-                        if ($aux1 > 0 && $aux2 > 0) {
-                            $row = $delitoRow + $r;
-                            $this->writeCell($aux1, $c, $row, 0, $sheet);
-                            $this->writeCell($aux2, $c, $row, 1, $sheet);
-                            $sheet->setCellValue('B' . $row, $name);
-                        }
+                    if ($aux1 > $aux2) {
+                        $row = $delitoRow + $r;
+                        $this->writeCell($aux1, $c, $row, 0, $sheet);
+                        $this->writeCell($aux2, $c, $row, 1, $sheet);
+                        $sheet->setCellValue('B' . $row, $name);
                     }
                 }
             }
@@ -151,13 +147,11 @@ class IncrementoExport implements WithEvents
                                 $aux2 = $data->{'CANTIDAD'};
                             }                            
                         }
-                        if ($aux1 < $aux2) {
-                            if($aux1 > 0 && $aux2 > 0) {
-                                $row = $delitoRow + $celda;
-                                $this->writeCell($aux1, $c, $row, 0, $sheet);
-                                $this->writeCell($aux2, $c, $row, 1, $sheet);
-                                $sheet->setCellValue('B' . $row, $name);
-                            }
+                        if ($aux1 >  $aux2) {
+                            $row = $delitoRow + $celda;
+                            $this->writeCell($aux1, $c, $row, 0, $sheet);
+                            $this->writeCell($aux2, $c, $row, 1, $sheet);
+                            $sheet->setCellValue('B' . $row, $name);
                         }         
                     }
                 }

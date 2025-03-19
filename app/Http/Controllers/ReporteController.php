@@ -166,14 +166,23 @@ class ReporteController extends Controller
 
     public function exportIncremento (ExportService $exportService) {
         $rangos = session('rangos', []);
-        $reporte = session('reporte', []);
+        $reporte = session('reporte', []);        
+
+        // try {
+        //     return $exportService->exportIncremento($rangos, $reporte);
+        // } catch (\Exception $e) {
+        //     return response()->json([
+        //         'error' => $e->getMessage()
+        //     ], 500);
+        // }
+
         try {
-            return $exportService->exportIncremento($rangos, $reporte);
+            return $exportService->exportDecremento($rangos, $reporte);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
-        }
+        }        
     }
 
     public function exportIncidencia (ExportService $exportService) {
