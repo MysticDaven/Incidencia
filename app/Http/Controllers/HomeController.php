@@ -93,7 +93,7 @@ class HomeController extends Controller
             12 => 'reporte.informativoAcumulado',
             13 => 'reporte.incremento',
             14 => 'reporte.incidencia',
-            15 => 'redireccion 15',
+            15 => 'reporte.delitosModalidad',
             16 => 'reporte.trata',
             17 => 'reporte.feminicidios',
             18 => 'reporte.graficas'
