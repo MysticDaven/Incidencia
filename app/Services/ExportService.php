@@ -54,14 +54,7 @@ class ExportService
 
     public function exportPrincipalesDelitos ($rangos, $reporte) {
         $export = new PrincipalesDelitosExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-PRINCIPALES-DELITOS.xlsm');
-
-        
-        // return response()->json([
-        //     'rangos' => $rangos,
-        //     'reporte' => $reporte,
-        //     'up' => 'down'
-        // ]);         
+        return Excel::download($export, 'PRUEBA-PRINCIPALES-DELITOS.xlsm');      
     }
 
     public function exportAltoImpacto ($rangos, $reporte) {
@@ -73,12 +66,12 @@ class ExportService
         $export = new PrincipalesDelitosMesExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-DELITOS-MES.xlsm');
     }
-
+    
     public function exportSecuestros ($rangos, $reporte) {
-        $export = new SecuestrosExport($rangos, $reporte, $this->temporaryFileFactory);
+        $export = new SecuestrosExport($rangos, $reporte, $this->temporaryFileFactory);  
         return Excel::download($export, 'PRUEBA-SECUESTROS.xlsm');
     }
-
+    
     public function exportExtorsiones ($rangos, $reporte) {
         $export = new ExtorsionesExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-EXTORSIONES.xlsm');

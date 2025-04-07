@@ -8,17 +8,21 @@ Route::get('/', function () {
     return redirect()->route('home.ingresarRangos');
 });
 
-Route::get('/rangos', [HomeController::class, 'ingresarRangos'])
-    ->name('home.ingresarRangos');
 
-Route::post('/procesar-rangos', [HomeController::class, 'procesarRangos'])
-    ->name('home.procesarRangos');
 
-Route::get('/reporte', [HomeController::class, 'ingresarReporte'])
-    ->name('home.ingresarReporte');
+Route::controller(HomeController::class)->name('home.')->group(function(){
+    Route::get('/rangos','ingresarRangos')
+    ->name('ingresarRangos');
 
-Route::post('/procesar-reporte', [HomeController::class, 'procesarReporte'])    
-    ->name('home.procesarReporte');
+    Route::post('/procesar-rangos', 'procesarRangos')
+        ->name('procesarRangos');
+
+    Route::get('/reporte','ingresarReporte')
+        ->name('ingresarReporte');
+
+    Route::post('/procesar-reporte','procesarReporte')    
+        ->name('procesarReporte');
+});
 
 // Route::post('/reporte/{reporte}', ReporteController::class);
 
@@ -42,59 +46,61 @@ Route::post('/export-excel', [ReporteController::class, 'exportExcel']);
 //     }
 // });
 
-Route::get('/export-anio/{anio}', [ReporteController::class, 'exportAnio'])
-    ->name('reporte.exportAnio');
+Route::controller(ReporteController::class)->name('reporte.')->group(function () {
+    Route::get('/export-anio/{anio}', 'exportAnio')
+    ->name('exportAnio');
 
-Route::get('/reporte/export/delitos', [ReporteController::class, 'exportPrincipalesDelitos'])
-    ->name('reporte.principalesDelitos');
+    Route::get('/reporte/export/delitos', 'exportPrincipalesDelitos')
+        ->name('principalesDelitos');
 
-Route::get('/reporte/export/delitos_mes/', [ReporteController::class, 'exportPrincipalesDelitosMes'])
-    ->name('reporte.principalesDelitosMes');
+    Route::get('/reporte/export/delitos_mes/', 'exportPrincipalesDelitosMes')
+        ->name('principalesDelitosMes');
 
-Route::get('/reporte/export/alto_impacto', [ReporteController::class, 'exportAltoImpacto'])    
-    ->name('reporte.altoImpacto');
+    Route::get('/reporte/export/alto_impacto', 'exportAltoImpacto')    
+        ->name('altoImpacto');
 
-Route::get('/reporte/export/secuestros/', [ReporteController::class, 'exportSecuestros'])
-    ->name('reporte.secuestros');
+    Route::get('/reporte/export/secuestros/', 'exportSecuestros')
+        ->name('secuestros');
 
-Route::get('/reporte/export/extorsiones/', [ReporteController::class, 'exportExtorsiones'])
-    ->name('reporte.extorsiones');
+    Route::get('/reporte/export/extorsiones/', 'exportExtorsiones')
+        ->name('extorsiones');
 
-Route::get('/reporte/export/homicidios/', [ReporteController::class, 'exportHomicidios'])
-    ->name('reporte.homicidios');
+    Route::get('/reporte/export/homicidios/', 'exportHomicidios')
+        ->name('homicidios');
 
-Route::get('/reporte/export/privacion/', [ReporteController::class, 'exportPrivacion'])
-    ->name('reporte.privacion');
+    Route::get('/reporte/export/privacion/', 'exportPrivacion')
+        ->name('privacion');
 
-Route::get('/reporte/export/lesiones/', [ReporteController::class, 'exportLesiones'])
-    ->name('reporte.lesiones');
+    Route::get('/reporte/export/lesiones/', 'exportLesiones')
+        ->name('lesiones');
 
-Route::get('/reporte/export/robo_modalidad/', [ReporteController::class, 'exportRoboModalidad'])
-    ->name('reporte.roboModalidad');
+    Route::get('/reporte/export/robo_modalidad/', 'exportRoboModalidad')
+        ->name('roboModalidad');
 
-Route::get('/reporte/export/informativo/', [ReporteController::class, 'exportInformativo'])
-    ->name('reporte.informativo');
+    Route::get('/reporte/export/informativo/', 'exportInformativo')
+        ->name('informativo');
 
-Route::get('/reporte/export/incremento/', [ReporteController::class, 'exportIncremento'])
-    ->name('reporte.incremento');
+    Route::get('/reporte/export/incremento/', 'exportIncremento')
+        ->name('incremento');
 
-Route::get('/reporte/export/incidencia/', [ReporteController::class, 'exportIncidencia'])
-    ->name('reporte.incidencia');
+    Route::get('/reporte/export/incidencia/', 'exportIncidencia')
+        ->name('incidencia');
 
-Route::get('/reporte/export/delitos_modalidad/', [ReporteController::class, 'exportDelitosModalidad'])
-    ->name('reporte.delitosModalidad');
+    Route::get('/reporte/export/delitos_modalidad/', 'exportDelitosModalidad')
+        ->name('delitosModalidad');
 
-Route::get('/reporte/export/trata_personas/', [ReporteController::class, 'exportTrata'])
-    ->name('reporte.trata');
+    Route::get('/reporte/export/trata_personas/', 'exportTrata')
+        ->name('trata');
 
-Route::get('/reporte/export/feminicidios/', [ReporteController::class, 'exportFeminicidios'])
-    ->name('reporte.feminicidios');
+    Route::get('/reporte/export/feminicidios/', 'exportFeminicidios')
+        ->name('feminicidios');
 
-Route::get('/reporte/export/informativo_acumulado/', [ReporteController::class, 'exportInformativoAcumulado'])
-    ->name('reporte.informativoAcumulado');
+    Route::get('/reporte/export/informativo_acumulado/', 'exportInformativoAcumulado')
+        ->name('informativoAcumulado');
 
-Route::get('/reporte/export/robo_modalidad_mes/', [ReporteController::class, 'exportRoboModalidadMes'])
-    ->name('reporte.roboModalidadMes');
+    Route::get('/reporte/export/robo_modalidad_mes/', 'exportRoboModalidadMes')
+        ->name('roboModalidadMes');
 
-Route::get('/reporte/export/graficas/', [ReporteController::class, 'exportGraficas'])
-    ->name('reporte.graficas');
+    Route::get('/reporte/export/graficas/', 'exportGraficas')
+        ->name('graficas');
+});
