@@ -84,26 +84,20 @@ class ReporteController extends Controller
         }
     }
 
-    public function exportHomicidios (ExportService $exportService) {
+
+    public function exportHomicidios(ExportService $exportService)
+    {
         $rangos = session('rangos', []);
         $reporte = session('reporte', []);
-        // try {
-        //     return $exportService->exportHomicidios($rangos, $reporte);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'error' => $e->getMessage()
-        //     ], 500);
-        // }
-
+    
         try {
-            return $exportService->exportHomicidiosComparativo($rangos, $reporte);
+            $zipPath = $exportService->exportHomicidios($rangos, $reporte);
+            return response()->download($zipPath)->deleteFileAfterSend(true);
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);            
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
+    
     public function exportPrivacion (ExportService $exportService) {
         $rangos = session('rangos', []);
         $reporte = session('reporte', []);
@@ -119,21 +113,13 @@ class ReporteController extends Controller
     public function exportLesiones (ExportService $exportService) {
         $rangos = session('rangos', []);
         $reporte = session('reporte', []);
-        // try {
-        //     return $exportService->exportLesiones($rangos, $reporte);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'error' => $e->getMessage()
-        //     ], 500);
-        // }
 
         try {
-            return $exportService->exportLesionesComparativo($rangos, $reporte);
+            $zipPath = $exportService->exportLesiones($rangos, $reporte);
+            return response()->download($zipPath)->deleteFileAfterSend(true);
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
-        }        
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function exportRoboModalidad (ExportService $exportService) {
@@ -160,25 +146,37 @@ class ReporteController extends Controller
         }
     }
 
+    // public function exportIncremento (ExportService $exportService) {
+    //     $rangos = session('rangos', []);
+    //     $reporte = session('reporte', []);        
+
+    //     // try {
+    //     //     return $exportService->exportIncremento($rangos, $reporte);
+    //     // } catch (\Exception $e) {
+    //     //     return response()->json([
+    //     //         'error' => $e->getMessage()
+    //     //     ], 500);
+    //     // }
+
+    //     try {
+    //         return $exportService->exportDecremento($rangos, $reporte);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }        
+    // }
+
     public function exportIncremento (ExportService $exportService) {
         $rangos = session('rangos', []);
-        $reporte = session('reporte', []);        
-
-        // try {
-        //     return $exportService->exportIncremento($rangos, $reporte);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'error' => $e->getMessage()
-        //     ], 500);
-        // }
+        $reporte = session('reporte', []);
 
         try {
-            return $exportService->exportDecremento($rangos, $reporte);
+            $zipPath = $exportService->exportIncremento($rangos, $reporte);
+            return response()->download($zipPath)->deleteFileAfterSend(true);
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
-        }        
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function exportIncidencia (ExportService $exportService) {

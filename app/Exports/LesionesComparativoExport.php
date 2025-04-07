@@ -126,11 +126,8 @@ class LesionesComparativoExport implements WithEvents
                 }
             }            
 
-            $temporaryFile = $this->temporaryFile->makeLocal();
-            IOFactory::createWriter($spreadsheet, 'Xlsx')->save($temporaryFile->getLocalPath());
-
-            $event->writer->reopen($temporaryFile, \Maatwebsite\Excel\Excel::XLSX);
-            $event->writer->getSheetByIndex(0);
+            $outputPath = storage_path('app/exports/PRUEBA-LESIONES-COMPARATIVO.xlsm');
+            IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);
         }
         else {
             throw new \Exception("La plantilla no existe en la ruta especificada: {$templatePath}");
