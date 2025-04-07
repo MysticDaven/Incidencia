@@ -90,10 +90,6 @@ class HomicidiosExport implements WithEvents
             $sheet->setCellValue('A5', $title);
 
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
-            // $fis = $resultados->where('SUBPRO', 'APATZINGÁN');
-            // $dol = $fis->where('MES', 1);
-            // Log::info('-------------RESULTADOS--------');
-            // Log::info($dol);
 
             foreach ($headers as $header) {
                 $dataFiscalia = $resultados->where('SUBPRO', $header['fisc']);
@@ -108,11 +104,8 @@ class HomicidiosExport implements WithEvents
                 }
             }
 
-            $temporaryFile = $this->temporaryFile->makeLocal();
-            IOFactory::createWriter($spreadsheet, 'Xlsx')->save($temporaryFile->getLocalPath());
-
-            $event->writer->reopen($temporaryFile, \Maatwebsite\Excel\Excel::XLSX);
-            $event->writer->getSheetByIndex(0);
+             $outputPath = storage_path('app/exports/PRUEBA-HOMICIDIOS.xlsx');
+             IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);
         }
         else {
             throw new \Exception("La plantilla no existe en la ruta especificada: {$templatePath}");

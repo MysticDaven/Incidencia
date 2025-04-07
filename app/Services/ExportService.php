@@ -25,8 +25,10 @@ use App\Exports\RoboModalidadMesExport;
 use App\Exports\SecuestrosExport;
 use App\Exports\TrataExport;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Files\TemporaryFileFactory;
+use ZipArchive;
 
 class ExportService
 {
@@ -77,30 +79,108 @@ class ExportService
         return Excel::download($export, 'PRUEBA-EXTORSIONES.xlsm');
     }
 
-    public function exportHomicidios ($rangos, $reporte) {
-        $export = new HomicidiosExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-HOMICIDIOS.xlsx');
-    }
+    // public function exportHomicidios ($rangos, $reporte) {
+    //     $export = new HomicidiosExport($rangos, $reporte, $this->temporaryFileFactory);
+    //     return Excel::download($export, 'PRUEBA-HOMICIDIOS.xlsx');
+    // }
 
-    public function exportHomicidiosComparativo ($rangos, $reporte) {
-        $export = new HomicidiosComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm');
+    // public function exportHomicidiosComparativo ($rangos, $reporte) {
+    //     $export = new HomicidiosComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
+    //     return Excel::download($export, 'PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm');
+    // }
+
+    public function exportHomicidios($rangos, $reporte)
+    {
+        $path1 = 'exports/PRUEBA-HOMICIDIOS.xlsx';
+        $path2 = 'exports/PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm';
+    
+        // Exportar archivos
+        $ok1 = Excel::store(new HomicidiosExport($rangos, $reporte, $this->temporaryFileFactory), $path1);
+        $ok2 = Excel::store(new HomicidiosComparativoExport($rangos, $reporte, $this->temporaryFileFactory), $path2);
+    
+        if (!$ok1 || !$ok2) {
+            throw new \Exception("Error al guardar uno o ambos archivos Excel.");
+        }
+    
+        $fullPath1 = storage_path("app/$path1");
+        $fullPath2 = storage_path("app/$path2");
+    
+        if (!file_exists($fullPath1)) {
+            throw new \Exception("Archivo no encontrado: $fullPath1");
+        }
+    
+        if (!file_exists($fullPath2)) {
+            throw new \Exception("Archivo no encontrado: $fullPath2");
+        }
+    
+        // Crear ZIP
+        $zipPath = storage_path('app/exports/reporte_homicidios.zip');
+        $zip = new ZipArchive;
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
+            $zip->addFile($fullPath1, 'PRUEBA-HOMICIDIOS.xlsx');
+            $zip->addFile($fullPath2, 'PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm');
+            $zip->close();
+            unlink($fullPath1);
+            unlink($fullPath2);        
+        } else {
+            throw new \Exception("No se pudo crear el archivo ZIP.");
+        }
+
+        return $zipPath;
     }
+    
 
     public function exportPrivacion ($rangos, $reporte) {
         $export = new PrivacionExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-PRIVACION.xlsm');
     }
 
-    public function exportLesiones ($rangos, $reporte) {
-        $export = new LesionesExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-LESIONES.xlsx');
-    }
+    // public function exportLesiones ($rangos, $reporte) {
+    //     $export = new LesionesExport($rangos, $reporte, $this->temporaryFileFactory);
+    //     return Excel::download($export, 'PRUEBA-LESIONES.xlsx');
+    // }
 
-    public function exportLesionesComparativo ($rangos, $reporte) {
-        $export = new LesionesComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-LESIONES-COMPARATIVO.xlsm');
-    }    
+    // public function exportLesionesComparativo ($rangos, $reporte) {
+    //     $export = new LesionesComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
+    //     return Excel::download($export, 'PRUEBA-LESIONES-COMPARATIVO.xlsm');
+    // }
+
+    public function exportLesiones ($rangos, $reporte) {
+        $path1 = 'exports/PRUEBA-LESIONES.xlsx';
+        $path2 = 'exports/PRUEBA-LESIONES-COMPARATIVO.xlsm';
+
+        $file1 = Excel::store(new LesionesExport($rangos, $reporte, $this->temporaryFileFactory), $path1);
+        $file2 = Excel::store(new LesionesComparativoExport($rangos, $reporte, $this->temporaryFileFactory), $path2);
+
+        if (!$file1 || !$file2) {
+            throw new \Exception("Error al guardar uno o ambos archivos Excel.");
+        }
+    
+        $fullPath1 = storage_path("app/$path1");
+        $fullPath2 = storage_path("app/$path2");
+    
+        if (!file_exists($fullPath1)) {
+            throw new \Exception("Archivo no encontrado: $fullPath1");
+        }
+    
+        if (!file_exists($fullPath2)) {
+            throw new \Exception("Archivo no encontrado: $fullPath2");
+        }
+
+        $zipPath = storage_path('app/exports/reporte_lesiones.zip');
+        $zip = new ZipArchive;
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
+            $zip->addFile($fullPath1, 'PRUEBA-LESIONES.xlsx');
+            $zip->addFile($fullPath2, 'PRUEBA-LESIONES-COMPARATIVO.xlsm');
+            $zip->close();
+            unlink($fullPath1);
+            unlink($fullPath2);        
+        } else {
+            throw new \Exception("No se pudo crear el archivo ZIP.");
+        }
+
+        return $zipPath;
+    }
         
     public function exportRoboModalidad ($rangos, $reporte) {
         $export = new RoboModalidadExport($rangos, $reporte, $this->temporaryFileFactory);
@@ -111,16 +191,44 @@ class ExportService
         $export = new InformativoExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-INFORMATIVO.xlsm');
     }
-
+    
     public function exportIncremento ($rangos, $reporte) {
-        $export = new IncrementoExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-INCREMENTO.xlsm');
-    }
+        $path1 = 'exports/PRUEBA-INCREMENTO.xlsm';
+        $path2 = 'exports/PRUEBA-DECREMENTO.xlsm';
 
-    public function exportDecremento ($rangos, $reporte) {
-        $export = new DecrementoExport($rangos, $reporte, $this->temporaryFileFactory);
-        return Excel::download($export, 'PRUEBA-DECREMENTO.xlsm');
-    }    
+        $file1 = Excel::store(new IncrementoExport($rangos, $reporte, $this->temporaryFileFactory), $path1);
+        $file2 = Excel::store(new DecrementoExport($rangos, $reporte, $this->temporaryFileFactory), $path2);
+
+        if (!$file1 || !$file2) {
+            throw new \Exception("Error al guardar uno o ambos archivos Excel.");
+        }
+    
+        $fullPath1 = storage_path("app/$path1");
+        $fullPath2 = storage_path("app/$path2");
+    
+        if (!file_exists($fullPath1)) {
+            throw new \Exception("Archivo no encontrado: $fullPath1");
+        }
+    
+        if (!file_exists($fullPath2)) {
+            throw new \Exception("Archivo no encontrado: $fullPath2");
+        }
+    
+        // Crear ZIP
+        $zipPath = storage_path('app/exports/reporte_incremento_decremento.zip');
+        $zip = new ZipArchive;
+        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {
+            $zip->addFile($fullPath1, 'PRUEBA-INCREMENTO.xlsm');
+            $zip->addFile($fullPath2, 'PRUEBA-DECREMENTO.xlsm');
+            $zip->close();
+            unlink($fullPath1);
+            unlink($fullPath2);        
+        } else {
+            throw new \Exception("No se pudo crear el archivo ZIP.");
+        }
+
+        return $zipPath;
+    }
 
     public function exportIncidencia ($rangos, $reporte) {
         $export = new IncidenciaExport($rangos, $reporte, $this->temporaryFileFactory);
