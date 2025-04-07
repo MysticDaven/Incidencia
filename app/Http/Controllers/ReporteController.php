@@ -34,10 +34,6 @@ class ReporteController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-        // return response()->json([
-        //     'rangos' => $rangos,
-        //     'reporte' => $reporte
-        // ]);
     }
 
     public function exportAltoImpacto (ExportService $exportService) {

@@ -1,3 +1,13 @@
+@import "./styles.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.loader {
+    border-top-color: #3498db;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
