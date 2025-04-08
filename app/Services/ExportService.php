@@ -79,22 +79,11 @@ class ExportService
         return Excel::download($export, 'PRUEBA-EXTORSIONES.xlsm');
     }
 
-    // public function exportHomicidios ($rangos, $reporte) {
-    //     $export = new HomicidiosExport($rangos, $reporte, $this->temporaryFileFactory);
-    //     return Excel::download($export, 'PRUEBA-HOMICIDIOS.xlsx');
-    // }
-
-    // public function exportHomicidiosComparativo ($rangos, $reporte) {
-    //     $export = new HomicidiosComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
-    //     return Excel::download($export, 'PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm');
-    // }
-
     public function exportHomicidios($rangos, $reporte)
     {
         $path1 = 'exports/PRUEBA-HOMICIDIOS.xlsx';
         $path2 = 'exports/PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm';
     
-        // Exportar archivos
         $ok1 = Excel::store(new HomicidiosExport($rangos, $reporte, $this->temporaryFileFactory), $path1);
         $ok2 = Excel::store(new HomicidiosComparativoExport($rangos, $reporte, $this->temporaryFileFactory), $path2);
     
@@ -134,16 +123,6 @@ class ExportService
         $export = new PrivacionExport($rangos, $reporte, $this->temporaryFileFactory);
         return Excel::download($export, 'PRUEBA-PRIVACION.xlsm');
     }
-
-    // public function exportLesiones ($rangos, $reporte) {
-    //     $export = new LesionesExport($rangos, $reporte, $this->temporaryFileFactory);
-    //     return Excel::download($export, 'PRUEBA-LESIONES.xlsx');
-    // }
-
-    // public function exportLesionesComparativo ($rangos, $reporte) {
-    //     $export = new LesionesComparativoExport($rangos, $reporte, $this->temporaryFileFactory);
-    //     return Excel::download($export, 'PRUEBA-LESIONES-COMPARATIVO.xlsm');
-    // }
 
     public function exportLesiones ($rangos, $reporte) {
         $path1 = 'exports/PRUEBA-LESIONES.xlsx';
@@ -214,7 +193,6 @@ class ExportService
             throw new \Exception("Archivo no encontrado: $fullPath2");
         }
     
-        // Crear ZIP
         $zipPath = storage_path('app/exports/reporte_incremento_decremento.zip');
         $zip = new ZipArchive;
         if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE)) {

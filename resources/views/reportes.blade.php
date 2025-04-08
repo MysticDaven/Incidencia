@@ -1,8 +1,20 @@
-<x-base_layout>
+<x-base_layout>    
     <div class="min-h-screen bg-gradient-to-br from-gray-100 to-blue-300 flex items-center justify-center p-6">
         <div class="bg-white p-10 rounded-2xl shadow-xl shadow-blue-950 w-full max-w-2xl border border-blue-200">
             <div class="text-center mb-10">
-                <h1 class="text-4xl font-bold text-blue-950">Incidencia Delictiva</h1>
+                <div class="flex">
+                    <div class="icon">
+                        <a href="{{route('home.ingresarRangos')}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#cdcdcd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 19-7-7 7-7"></path>
+                                <path d="M19 12H5"></path>
+                            </svg>
+                        </a>
+                    </div>                    
+                    <div class="mx-auto">
+                        <h1 class="text-4xl font-bold text-blue-950">Incidencia Delictiva</h1>
+                    </div>                    
+                </div>                               
                 <p class="text-gray-600 mt-3">Se generará un reporte en el siguiente periodo:</p>
                 @if ($rangos['mes_inicial'] == $rangos['mes_final'])
                     <p class="text-center text-2xl mt-3 font-bold">
@@ -50,114 +62,68 @@
             <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24"></div>
         </div>
     </div>
+    
+    <script type="text/javascript">       
+        const formReporte = document.getElementById("formReporte");        
 
-    {{-- <script>
-        const boton = document.getElementById('btnGenereteReport');
-        const loader = document.getElementById('loaderReport');
-
-        boton.addEventListener('click', () => {
-            boton.style.display = 'none';
-            loader.style.display = 'flex';
-        });
-    </script> --}}
-    {{-- <script>
-        const boton = document.getElementById('btnGenereteReport');
-        const loader = document.getElementById('loaderReport');
-        const form = document.getElementById('formReporte');
-        const iframe = document.getElementById('downloadFrame');
-    
-        boton.addEventListener('click', () => {
-            boton.disabled = true;
-            loader.style.display = 'flex';
-            form.submit();
-        });
-    
-        // Detecta cuando termina la petición de descarga
-        iframe.addEventListener('load', () => {
-            loader.style.display = 'none';
-            location.reload();
-        });
-    </script> --}}
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const boton = document.getElementById('btnGenereteReport');
-            const loader = document.getElementById('loaderReport');
-            const form = document.getElementById('formReporte');
-            const iframe = document.getElementById('downloadFrame');
-    
-            if (!iframe) {
-                console.error("El iframe 'downloadFrame' no existe en el DOM.");
-                return;
+        formReporte.addEventListener("submit", function (e) {
+            const reportes = {
+                1: 'PRUEBA-PRINCIPALES-DELITOS.xlsm',
+                2: 'PRUEBA-DELITOS-MES.xlsm',
+                3: 'PRUEBA-ALTO.xlsm',
+                4: 'PRUEBA-SECUESTROS.xlsm',
+                5: 'PRUEBA-EXTORSIONES.xlsm',
+                6: 'reporte_homicidios.zip',
+                7: 'PRUEBA-PRIVACION.xlsm',
+                8: 'reporte_lesiones.zip',
+                9: 'PRUEBA-ROBO-MODALIDAD.xlsm',
+                10: 'PRUEBA-ROBO-MODALIDAD-MES.xlsm',
+                11: 'PRUEBA-INFORMATIVO.xlsm',
+                12: 'PRUEBA-INFORMATIVO-ACUMULADO.xlsm',
+                13: 'reporte_incremento_decremento.zip',
+                14: 'PRUEBA-INCIDENCIA.xlsm',
+                15: 'PRUEBA-DELITOS-MODALIDAD.xlsm',
+                16: 'PRUEBA-TRATA.xlsm',
+                17: 'PRUEBA-FEMINICIDIOS.xlsm',
+                18: 'PRUEBA-GRAFICAS.xlsm'
             }
-    
-            if (!form) {
-                console.error("El formulario 'formReporte' no existe en el DOM.");
-                return;
-            }
-    
-            // Detectar que el iframe ha cargado
-            iframe.addEventListener('load', () => {
-                console.log("Evento load del iframe disparado.");
-                loader.style.display = 'none';
-                location.reload();
-            });
-    
-            // Enviar formulario al hacer click
-            boton.addEventListener('click', () => {
-                console.log("Botón clickeado. Enviando formulario.");
-                boton.disabled = true;
-                loader.style.display = 'flex';
-                form.submit();
-            });
-        });
-    </script> --}}
+            e.preventDefault(); 
+            
+            const reporte = document.getElementById("reporte").value;
+            const loader = document.getElementById("loaderReport");
+            loader.style.display = "flex";
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const boton = document.getElementById('btnGenereteReport');
-            const loader = document.getElementById('loaderReport');
-            const form = document.getElementById('formReporte');
-    
-            const checkCookieInterval = 500; // ms
-            const maxWaitTime = 15000; // 15 segundos máximo
-    
-            boton.addEventListener('click', () => {
-                boton.disabled = true;
-                loader.style.display = 'flex';
-    
-                const downloadToken = Date.now(); // o usa UUID
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'download_token';
-                input.value = downloadToken;
-                form.appendChild(input);
-    
-                form.submit();
-    
-                // Revisa periódicamente si se puso la cookie
-                let waited = 0;
-                const check = setInterval(() => {
-                    const cookies = document.cookie.split(';').map(c => c.trim());
-                    const found = cookies.find(c => c.startsWith('downloaded='));
-    
-                    if (found && found.includes(downloadToken)) {
-                        clearInterval(check);
-                        document.cookie = "downloaded=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // eliminar cookie
-                        loader.style.display = 'none';
-                        location.reload(); // o cualquier otra acción
-                    }
-    
-                    waited += checkCookieInterval;
-                    if (waited > maxWaitTime) {
-                        clearInterval(check);
-                        loader.style.display = 'none';
-                        alert("La descarga no pudo ser confirmada.");
-                    }
-                }, checkCookieInterval);
+            const formData = new FormData(formReporte);
+
+            fetch("{{ route('home.procesarReporte') }}", {
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(response => {
+                loader.style.display = "none";
+                if (response.ok) {
+                    return response.blob();
+                } else {
+                    throw new Error("Error en la petición: " + response.status);
+                }
+            })
+            .then(blob => {                
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = reportes[reporte];
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(error => {
+                loader.style.display = "none";
+                console.error("Hubo un error:", error);
             });
         });
-    </script> --}}
-    
-        
+    </script>           
     
 </x-base_layout>

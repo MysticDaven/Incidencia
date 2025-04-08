@@ -1,0 +1,8 @@
+.icon svg {
+    @apply stroke-blue-950;
+    @apply transition;
+}
+
+.icon svg:hover {
+    stroke: rgb(192,159,119);
+}
