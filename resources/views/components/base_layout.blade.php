@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(["resources/css/app.css", "resources/js/app.js" ])
-    <title>Incidencia</title>
+    <link href="{{ asset('images/web.png') }}" rel="shortcut icon">
+    <title>Incidencia</title>    
 </head>
 <body>
     <x-header></x-header>        

@@ -6,3 +6,12 @@
 .icon svg:hover {
     stroke: rgb(192,159,119);
 }
+
+.logo_fge {
+    background-image: url('../../public/img/Fiscalia1.PNG');
+    height: 110px;
+    width: 110px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 12px;
+}
