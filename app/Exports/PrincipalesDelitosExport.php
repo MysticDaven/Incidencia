@@ -119,7 +119,6 @@ class PrincipalesDelitosExport implements WithEvents
         $mesFinal = $this->rangos['mes_final'];
         $year = $this->rangos['reporte_anio'] - 3;
 
-        // Log::info('MES IN: ' . $mesInicial . ' MES FIN: ' . $mesFinal . ' AÑO: ' . $year);
 
         $i = 0;
         foreach ($headers as $header) {
@@ -195,29 +194,17 @@ class PrincipalesDelitosExport implements WithEvents
         else{
             $year += 3;
             $resultados = $this->realizarConsultaOp($year, $mesInicial, $mesFinal, 1);
-            //Log::info('------------------RESULTADOS TOTAL-------------------' . $year);
-            Log::info($resultados);
             $c = 'c';
             foreach ($resultados as $data) {
                 $anios = $year - $data->{'ANIO'};
                 if ($anios >= 0 && $anios <= 3) {
-                    Log::info($data->{'Delito'});
                     $row = $headers[0]['inicio'] + array_search($data->{'Delito'}, $this->delitos);
                     $value = $data->{'CANTIDAD'};
-                    if ($data->{'Delito'} == 'ROBO') {
-                        Log::info($value . ' ' . $c . ' ' . $row . ' ' .  ' ' . self::I2[$anios]);
-                        
-                    }
                     $this->writeCellOp($value, $c, $row, self::I2[$anios], $sheet);
-                }
-                else {
-                    Log::info('NO ENTRA ' . $anios);
-                }
+                }                
             }
 
-            $resultados = $this->realizarConsultaOp($year, $mesInicial, $mesFinal, 0);
-            //Log::info('------------------RESULTADOS FISCALIA-------------------');
-            //Log::info($resultados);
+            $resultados = $this->realizarConsultaOp($year, $mesInicial, $mesFinal, 0);            
             array_shift($headers);
             $c = 'c';
             foreach ($headers as $header) {
@@ -229,9 +216,6 @@ class PrincipalesDelitosExport implements WithEvents
                             $row = $header['inicio'] + array_search($data->{'Delito'}, $this->delitos);
                             $value = $data->{'CANTIDAD'};
                             $this->writeCellOp($value, $c, $row, self::I2[$anios], $sheet);
-                        }
-                        else {
-                            Log::info('NO ENTRA ' . $anios);
                         }
                     }
                 } 
@@ -509,9 +493,7 @@ class PrincipalesDelitosExport implements WithEvents
     
 
     public static function writeCell ($value, $indice, $cell, $sheet) {
-        // Log::info('ENTRAS A WRITE');
         $columns = ['C', 'D', 'E', 'F'];
-            // Log::info('ESCRIBES DE VERDAD');
             $auxCell = $columns[$indice] . $cell;
             $sheet->SetCellValue($auxCell, $value);
     }

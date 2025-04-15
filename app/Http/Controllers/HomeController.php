@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ReporteExport;
+use App\Http\Requests\RangoRequest;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
@@ -32,16 +35,9 @@ class HomeController extends Controller
         return view('rangos', compact(['months', 'years']));
     }
 
-    public function procesarRangos (Request $request) {
-        $validated = $request->validate([
-            'reporte_anio' => 'required|numeric',
-            'mes_inicial' => 'required|integer|min:0|max:12',
-            'mes_final' => 'required|integer|min:0|max:12|gte:mes_inicial',
-        ]);        
-
-        $request->session()->put('rangos', $validated);
+    public function procesarRangos (RangoRequest $request) {
+        $request->session()->put('rangos', $request->validated());
         // $request->session()->put('datosPrevios', $request->only(['reporte_anio', 'mes_inicial', 'mes_final'])); only obtiene solo datos del $request, pero es mejor y más limpio validarlos antes
-        
         return redirect()->route('home.ingresarReporte');
     }
 
@@ -87,8 +83,11 @@ class HomeController extends Controller
 
     public function procesarReporte (Request $request) {
         $reporte = $request->validate([
-            'reporte' => 'required'
+            'reporte' => 'required|integer|min:1|max:18'
+        ],[
+            'reporte' => 'El :attribute es incorrecto.'
         ]);
+        
         $rangos = session('rangos', []);
         $rangos['reporte_anio'] = $rangos['reporte_anio'];
 
@@ -117,17 +116,11 @@ class HomeController extends Controller
             session([
                 'rangos' => $rangos,
                 'reporte' => $reporte
-            ]);
+            ]);            
             return redirect()->route($redirecciones[$reporte['reporte']]);
         } else {
             return 'No está';
-        }
-        
-        // return response()->json([
-        //     'mensaje' => 'Datos recibidos con éxito.',
-        //     'rangos' => $rangos,
-        //     'reporte' => $reporte,
-        // ]);    
+        }    
     }
 
     public function exportExcel (Request $request) {

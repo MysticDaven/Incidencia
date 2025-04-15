@@ -38,7 +38,18 @@
                     <select 
                         name="reporte" 
                         id="reporte" 
-                        class="w-full text-center border border-gray-300 rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none transition-all duration-200">
+                        class="
+                            w-full 
+                            text-center border 
+                            @error ('reporte')
+                                border-red-300
+                                focus:ring-red-600
+                                
+                            @else
+                                border-gray-300
+                                focus:ring-blue-400
+                            @enderror
+                            rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:outline-none transition-all duration-200">
                         @php
                             $i = 1;
                         @endphp
@@ -47,22 +58,28 @@
                             @php $i++; @endphp
                         @endforeach
                     </select>
+                    @error ('reporte')
+                        <div class="flex m-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FF0000" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                            </svg>                          
+                            <span class="italic font-serif ml-4">{{$message}}</span>
+                        </div>
+                    @enderror                    
                 </div>
                 <div class="mt-16 flex justify-end">
                     <button id="btnGenereteReport" 
                         type="submit" 
-                        class="bg-blue-950 hover:bg-blue-800 text-white font-semibold px-6 py-2 rounded-xl shadow-md transition-all duration-200">Generar
+                        class="bg-blue-950 hover:bg-[rgb(192,159,119)] text-white font-semibold px-6 py-2 rounded-xl shadow-md transition-all duration-200">Generar
                     </button>
                 </div>            
-            </form>
-            <iframe id="downloadFrame" style="display: none;"></iframe>            
+            </form>            
         </div>
 
         <div id="loaderReport" style="display: none;" class="fixed inset-0 bg-white bg-opacity-60 flex items-center justify-center z-50">
             <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24"></div>
         </div>
     </div>
-    
     <script type="text/javascript">       
         const formReporte = document.getElementById("formReporte");        
 
@@ -124,6 +141,5 @@
                 console.error("Hubo un error:", error);
             });
         });
-    </script>           
-    
+    </script>
 </x-base_layout>

@@ -90,6 +90,11 @@ class RoboModalidadExport implements WithEvents
             $period = ($mesInicial == $mesFinal) ? self::MONTH[$mesInicial - 1] . ' ' . $periodYear : self::MONTH[$mesInicial - 1] . ' - ' . self::MONTH[$mesFinal - 1] . ' ' . $periodYear;
             $sheet->setCellValue('A4', $period);
 
+            $sheet->setCellValue('C7', $year - 3);
+            $sheet->setCellValue('D7', $year - 2);
+            $sheet->setCellValue('E7', $year - 1);
+            $sheet->setCellValue('F7', $year);
+
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
 
             // Log::info('-------------------RESULTADOS-------------');
@@ -198,132 +203,7 @@ class RoboModalidadExport implements WithEvents
                 " END"))
             ->get();
 
-        // $delitos = AveMunicipio::leftjoin('DELITOS as d', 'AVE_MUNICIPIOS.IDDELITO', '=', 'd.IDDELITO')
-        //     ->select(
-        //         'sb.SUBPRO',
-        //         DB::raw("
-        //             	CASE
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1810' THEN 'ROBO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181A' THEN 'ROBO_BANCO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181S' THEN 'CAJA_AHORRO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1819' THEN 'CASA_HABITACION'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181B' THEN 'COMERCIO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182H' THEN 'CH_DENTRO_SUC'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182K' THEN 'CH_TARJETA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182J' THEN 'CH_RETIRO_CAJERO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182I' THEN 'CH_RETIRO_VENT'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181D' THEN 'ESCUELAS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181F' THEN 'GASOLINERAS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181C' THEN 'INDUSTRIA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181W' THEN 'ATM'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181X' THEN 'RELIGIOSA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181Y' THEN 'INTERIOR_VEHICULO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181E' THEN 'OFICINAS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182L' THEN 'PERSONAS_LP'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181G' THEN 'TALLERES'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182A' THEN 'TRANSEUNTE_VIA_PUBLICA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182B' THEN 'TRANSEUNTE_ABIERTO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1818' THEN 'TRANSEUNTE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181R' THEN 'CAMION'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181Q' THEN 'COMBI'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181P' THEN 'TAXI'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1817' THEN 'A_VEHICULO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1812' THEN 'CALIFICADO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1816' THEN 'CHOFER_AUTOBUS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1815' THEN 'CHOFER_REPARTIDOR'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181N' THEN 'ARTE_SACRO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181M' THEN 'AUTOPARTES'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181L' THEN 'COBRE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181I' THEN 'DOCUMENTOS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182F' THEN 'EMBARCACIONES'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181O' THEN 'HIDROCARBUROS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181H' THEN 'MOTOCICLETA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181K' THEN 'REMOLQUE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182G' THEN 'TRACTOR'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '2350' THEN 'USO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1814' THEN 'DE_VEHICULO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181J' THEN 'VEHICULO_MAQUINARIA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181Z' THEN 'CARRETERA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182E' THEN 'TRANSPORTE_IND'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182D' THEN 'TRANSPORTE_PC'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182C' THEN 'TRANSPORTE_PI'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181U' THEN 'ANT_DESC'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181V' THEN 'CONYUGE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181T' THEN 'EQUIPARADO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1811' THEN 'SIMPLE'
-        //                 END AS Delito
-        //         "),
-        //         'AVE_MUNICIPIOS.ANIO',
-        //         DB::raw('SUM(AVE_MUNICIPIOS.CANTIDAD) AS CANTIDAD')
-        //     )
-        //     ->join('MUNICIPIOS as m', 'm.IDMUNICIPIO', '=', 'AVE_MUNICIPIOS.IDMUNICIPIO')
-        //     ->join('SUBPRO as sb', 'sb.IDSUBPRO', '=', 'm.IDSUBPRO2')
-        //     ->whereBetween('AVE_MUNICIPIOS.ANIO', [$year - 3, $year])
-        //     ->whereBetween('AVE_MUNICIPIOS.MES', [$mesInicial, $mesFinal])
-        //     ->whereExists(function ($query) {
-        //         $query->select(DB::raw(1))
-        //               ->from('DELITOS as d')
-        //               ->whereColumn('d.IDDELITO', 'AVE_MUNICIPIOS.IDDELITO')
-        //               ->where('d.ESTATUS', 1);
-        //     })
-        //     ->whereIn('AVE_MUNICIPIOS.IDDELITO', self::ROBOS_LIST)
-        //     ->groupBy('sb.SUBPRO', 'AVE_MUNICIPIOS.ANIO', 
-        //         DB::raw("
-        //             	CASE
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1810' THEN 'ROBO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181A' THEN 'ROBO_BANCO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181S' THEN 'CAJA_AHORRO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1819' THEN 'CASA_HABITACION'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181B' THEN 'COMERCIO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182H' THEN 'CH_DENTRO_SUC'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182K' THEN 'CH_TARJETA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182J' THEN 'CH_RETIRO_CAJERO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182I' THEN 'CH_RETIRO_VENT'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181D' THEN 'ESCUELAS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181F' THEN 'GASOLINERAS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181C' THEN 'INDUSTRIA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181W' THEN 'ATM'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181X' THEN 'RELIGIOSA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181Y' THEN 'INTERIOR_VEHICULO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181E' THEN 'OFICINAS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182L' THEN 'PERSONAS_LP'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181G' THEN 'TALLERES'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182A' THEN 'TRANSEUNTE_VIA_PUBLICA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182B' THEN 'TRANSEUNTE_ABIERTO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1818' THEN 'TRANSEUNTE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181R' THEN 'CAMION'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181Q' THEN 'COMBI'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181P' THEN 'TAXI'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1817' THEN 'A_VEHICULO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1812' THEN 'CALIFICADO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1816' THEN 'CHOFER_AUTOBUS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1815' THEN 'CHOFER_REPARTIDOR'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181N' THEN 'ARTE_SACRO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181M' THEN 'AUTOPARTES'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181L' THEN 'COBRE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181I' THEN 'DOCUMENTOS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182F' THEN 'EMBARCACIONES'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181O' THEN 'HIDROCARBUROS'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181H' THEN 'MOTOCICLETA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181K' THEN 'REMOLQUE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182G' THEN 'TRACTOR'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '2350' THEN 'USO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1814' THEN 'DE_VEHICULO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181J' THEN 'VEHICULO_MAQUINARIA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181Z' THEN 'CARRETERA'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182E' THEN 'TRANSPORTE_IND'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182D' THEN 'TRANSPORTE_PC'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '182C' THEN 'TRANSPORTE_PI'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181U' THEN 'ANT_DESC'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181V' THEN 'CONYUGE'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '181T' THEN 'EQUIPARADO'
-        //                     WHEN AVE_MUNICIPIOS.IDDELITO = '1811' THEN 'SIMPLE'
-        //                 END
-        //         ")
-        //     )
-        //     ->get();        
-                
-        return $delitos;
+            return $delitos;
     }
 
     public function writeCell ($value, $column, $row, $sum, $sheet) {
