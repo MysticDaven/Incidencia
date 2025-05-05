@@ -124,13 +124,13 @@ class PrincipalesDelitosExport implements WithEvents
         foreach ($headers as $header) {
             $fisc = $this->fiscalias[$i];
             if ($fisc=="ZITÁCUARO" || $fisc=="MORELIA" || $fisc=="URUAPAN") {
-                $msg = 'INCIDENCIA DELICTIVA POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADA EN LA FISCALÍA DE ' . $fisc;
+                $msg = 'INCIDENCIA DE CARPETA DE INVESTIGACIÓN REGISTRADA EN LA FISCALÍA DE ' . $fisc;
             }
             else if ($fisc == 'ESTADO DE MICHOACÁN') {
-                $msg = 'INCIDENCIA DELICTIVA POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADA EN EL ' . $fisc;
+                $msg = 'INCIDENCIA DELICTIVA DE CARPETA DE INVESTIGACIÓN REGISTRADA EN EL ' . $fisc;
             }
             else {
-                $msg = 'INCIDENCIA DELICTIVA POR AVERIGAUCIÓN PREVIA REGISTRADA EN LA FISCALÍA DE ' . $fisc;
+                $msg = 'INCIDENCIA DELICTIVA DE CARPETA DE INVESTIGACIÓN REGISTRADA EN LA FISCALÍA DE ' . $fisc;
             }
             $sheet->setCellValue($header['h2'], $msg);
             if ($mesInicial == $mesFinal) {
@@ -152,9 +152,7 @@ class PrincipalesDelitosExport implements WithEvents
             $sheet->SetCellValue("J".$h3, ($year+3).' - '.($year));
             $sheet->SetCellValue("L".$h3, ($year+3).' - '.($year+1));
             $sheet->SetCellValue("N".$h3, ($year+3).' - '.($year+2));
-            // if ($header['inicio'] == 53) {
-            //     $this->realizarConsulta($year, $mesInicial, $mesFinal, $header['inicio'], $sheet);
-            // }     
+            
             $i++;        
         }        
 

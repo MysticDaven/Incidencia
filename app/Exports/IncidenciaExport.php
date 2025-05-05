@@ -67,6 +67,8 @@ class IncidenciaExport implements WithEvents
             $sheet->setCellValue('AC7', 'TOTAL ' . $year - 1);
             $sheet->setCellValue('AD7', 'TOTAL ' . $year);
 
+            $sheet->getPageSetup()->setPrintArea('A1:AE483');
+
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
             // Log::info('---------------RESULTADOS FISCALIAS----------------');
             // Log::info($resultados);

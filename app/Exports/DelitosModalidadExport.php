@@ -60,7 +60,7 @@ class DelitosModalidadExport implements WithEvents
             $period = ($mesInicial == $mesFinal) ? self::MONTH[$mesInicial - 1] : self::MONTH[$mesInicial - 1] . ' - ' . self::MONTH[$mesFinal - 1];
             $period .= ' ' . $year - 2 . ' - ' . $year;
 
-            $sheet->setCellValue('C7', $period);
+            $sheet->setCellValue('C6', $period);
             $sheet->setCellValue('C10', $year - 2);
             $sheet->setCellValue('D10', $year - 1);
             $sheet->setCellValue('E10', $year);

@@ -97,6 +97,7 @@ class DecrementoExport implements WithEvents
             $period .= ' ' . $year - 1 . ' - ' . $year;
 
             $sheet->setCellValue('A4', $period);
+            $sheet->setCellValue('A2', 'ANÁLISIS ESTADÍSTICO DEL DECREMENTO');
             $sheet->setCellValue('C7', $year - 1);
             $sheet->setCellValue('D7', $year);
             $sheet->setCellValue('L3', 1);
@@ -157,7 +158,7 @@ class DecrementoExport implements WithEvents
                 }
             }
 
-            $outputPath = storage_path('app/exports/PRUEBA-DECREMENTO.xlsm');
+            $outputPath = storage_path('app/exports/DECREMENTO.xlsm');
             IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);
         }
         else {

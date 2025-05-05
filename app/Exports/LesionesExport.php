@@ -87,7 +87,7 @@ class LesionesExport implements WithEvents
 
             $title = ($mesInicial == $mesFinal) ? self::MONTH[$mesInicial - 1] . ' ' . $year : self::MONTH[$mesInicial - 1] . ' - ' . self::MONTH[$mesFinal - 1] . ' ' . $year;
             $sheet->setCellValue('A5', $title);
-            $sheet->setCellValue('A4', 'LESIONES POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADAS EN EL ESTADO');
+            $sheet->setCellValue('A4', 'LESIONES DE CARPETA DE INVESTIGACIÓN REGISTRADAS EN EL ESTADO');
 
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
             // Log::info('------------RESULTADOS--------------');
@@ -106,7 +106,7 @@ class LesionesExport implements WithEvents
                 }
             }            
             
-            $outputPath = storage_path('app/exports/PRUEBA-LESIONES.xlsx');
+            $outputPath = storage_path('app/exports/LESIONES.xlsx');
             IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);
         }
         else {

@@ -94,7 +94,7 @@ class FeminicidiosExport implements WithEvents
 
             $title = $cad . ' - ' . $cad2;
             $sheet->setCellValue('A5', $title);
-            $sheet->setCellValue('A4', 'FEMINICIDIOS POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADOS EN EL ESTADO');
+            $sheet->setCellValue('A4', 'FEMINICIDIOS DE CARPETA DE INVESTIGACIÓN REGISTRADOS EN EL ESTADO');
 
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
             

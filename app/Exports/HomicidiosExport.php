@@ -104,7 +104,7 @@ class HomicidiosExport implements WithEvents
                 }
             }
 
-             $outputPath = storage_path('app/exports/PRUEBA-HOMICIDIOS.xlsx');
+             $outputPath = storage_path('app/exports/HOMICIDIOS.xlsx');
              IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);
         }
         else {

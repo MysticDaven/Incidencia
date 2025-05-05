@@ -80,38 +80,57 @@
             <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24"></div>
         </div>
     </div>
-    <script type="text/javascript">       
-        const formReporte = document.getElementById("formReporte");        
 
+    <script type="text/javascript">       
+        const formReporte = document.getElementById("formReporte");
+        const meses= @json($months);
+        var year = {{ $rangos['reporte_anio'] }};
+        var monthStart = {{ $rangos['mes_inicial'] }};        
+        var monthEnd = {{ $rangos['mes_final'] }};
+
+        monthStart = meses[monthStart];
+        monthEnd = meses[monthEnd];
+        year = year.toString().slice(-2);
+        monthStart = monthStart.toString().slice(0, 3).toUpperCase();
+        monthEnd = monthEnd.toString().slice(0, 3).toUpperCase();
+
+        if (monthStart === monthEnd) {            
+            var temporary = '_' + monthStart + '_' + year + '.xlsm'
+        }
+        else {
+            var temporary = '_' + monthStart + '-' + monthEnd + '_' + year + '.xlsm'
+        }
+    
         formReporte.addEventListener("submit", function (e) {
             const reportes = {
-                1: 'PRUEBA-PRINCIPALES-DELITOS.xlsm',
-                2: 'PRUEBA-DELITOS-MES.xlsm',
-                3: 'PRUEBA-ALTO.xlsm',
-                4: 'PRUEBA-SECUESTROS.xlsm',
-                5: 'PRUEBA-EXTORSIONES.xlsm',
-                6: 'reporte_homicidios.zip',
-                7: 'PRUEBA-PRIVACION.xlsm',
-                8: 'reporte_lesiones.zip',
-                9: 'PRUEBA-ROBO-MODALIDAD.xlsm',
-                10: 'PRUEBA-ROBO-MODALIDAD-MES.xlsm',
-                11: 'PRUEBA-INFORMATIVO.xlsm',
-                12: 'PRUEBA-INFORMATIVO-ACUMULADO.xlsm',
-                13: 'reporte_incremento_decremento.zip',
-                14: 'PRUEBA-INCIDENCIA.xlsm',
-                15: 'PRUEBA-DELITOS-MODALIDAD.xlsm',
-                16: 'PRUEBA-TRATA.xlsm',
-                17: 'PRUEBA-FEMINICIDIOS.xlsm',
-                18: 'PRUEBA-GRAFICAS.xlsm'
-            }
+                1: '1.INCIDENCIA_COMPARATIVO.xlsm',
+                2: '2.INCIDENCIA_POR_MES.xlsm',
+                3: '3.Alto_Impacto_COMPARATIVO.xlsm',
+                4: '7.Secuestros_KARDEX.xlsm',
+                5: '8.Extorsiones_KARDEX.xlsm',
+                6: 'Reporte_Homicidios.zip',
+                7: '9.Privacion_libertad_KARDEX_COMPARATIVO.xlsm',
+                8: 'Reporte_Lesiones.zip',
+                9: '15.Robos_POR_SUB_COMPARATIVO.xlsm',
+                10: '15.1Robo_por_Meses.xlsm',
+                11: '14.Informativo_MES.xlsm',
+                12: '14.1_Informativo_Acumulado' + temporary,
+                13: 'Incremento_Decremento.zip',
+                14: '16.Incidencia_Estatal_Fiscalia.xlsm',
+                15: '4.delitosmodalidad.xlsm',
+                16: '13.Trata_Personas.xlsm',
+                17: '12.Feminicidios.xlsm',
+                18: '3.1Graficas_Alto_Impacto.xlsm'
+            };
+    
             e.preventDefault(); 
             
             const reporte = document.getElementById("reporte").value;
             const loader = document.getElementById("loaderReport");
-            loader.style.display = "flex";
-
+            loader.style.display = "flex";            
+    
             const formData = new FormData(formReporte);
-
+    
             fetch("{{ route('home.procesarReporte') }}", {
                 method: "POST",
                 headers: {
@@ -121,17 +140,30 @@
             })
             .then(response => {
                 loader.style.display = "none";
-                if (response.ok) {
-                    return response.blob();
-                } else {
+    
+                const contentType = response.headers.get("Content-Type");
+    
+                if (contentType && contentType.includes("text/html")) {
+                    return response.text().then(html => {
+                        document.open();
+                        document.write(html);
+                        document.close();
+                    });
+                }
+    
+                if (!response.ok) {
                     throw new Error("Error en la petición: " + response.status);
                 }
+    
+                return response.blob();
             })
-            .then(blob => {                
+            .then(blob => {
+                if (!blob || blob.type === "text/html") return;
+    
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = reportes[reporte];
+                a.download = reportes[reporte] || "archivo.xlsx";
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
@@ -142,4 +174,5 @@
             });
         });
     </script>
+
 </x-base_layout>
