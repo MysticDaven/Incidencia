@@ -97,7 +97,7 @@ class LesionesComparativoExport implements WithEvents
             $title = $title . ' ' . $cad;
 
             $sheet->setCellValue('B5', $title);
-            $sheet->setCellValue('B4', 'DELITO LESIONES POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADAS EN EL ESTADO');
+            $sheet->setCellValue('B4', 'DELITO LESIONES DE CARPETA DE INVESTIGACIÓN REGISTRADAS EN EL ESTADO');
             $sheet->setCellValue('A10', 'Lesiones Dolosas');
             $sheet->setCellValue('A11', 'Lesiones Dolosas Con Arma Blanca');
             $sheet->setCellValue('A12', 'Lesiones Dolosas Con Arma de Fuego');
@@ -126,7 +126,7 @@ class LesionesComparativoExport implements WithEvents
                 }
             }            
 
-            $outputPath = storage_path('app/exports/PRUEBA-LESIONES-COMPARATIVO.xlsm');
+            $outputPath = storage_path('app/exports/LESIONES-COMPARATIVO.xlsm');
             IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);
         }
         else {

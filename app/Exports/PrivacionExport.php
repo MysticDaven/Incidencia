@@ -93,7 +93,7 @@ class PrivacionExport implements WithEvents
 
             $title = $cad . ' - ' . $cad2;
             $sheet->setCellValue('A5', $title);
-            $sheet->setCellValue('A4', 'PRIVACIONES DE LA LIBERTAD POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADAS EN EL ESTADO');
+            $sheet->setCellValue('A4', 'PRIVACIONES DE LA LIBERTAD DE CARPETA DE INVESTIGACIÓN REGISTRADAS EN EL ESTADO');
 
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
 

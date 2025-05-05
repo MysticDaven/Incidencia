@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class AltoImpactoExport implements WithEvents
 {
@@ -67,6 +68,10 @@ class AltoImpactoExport implements WithEvents
             $sheet->setCellValue('E9', $year - 1);
             $sheet->setCellValue('F9', $year);
 
+            //Saltos de página personalizados
+            // $sheet->setBreak('AC1', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);    
+            // $sheet->getPageSetup()->setPrintArea('A1:AB21,AC1:BB21,BC1:CB21,CC1:DB21,DC1:EO21');
+            
             $resultados = $this->realizarConsulta($mesInicial, $mesFinal, $year, 0);
             $r = 10;
             foreach ($headers as $header => $c) {

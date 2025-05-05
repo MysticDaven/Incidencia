@@ -120,7 +120,7 @@ class HomicidiosComparativoExport implements WithEvents
                 }
             }
 
-            $outputPath = storage_path('app/exports/PRUEBA-HOMICIDIOS-COMPARATIVO.xlsm');
+            $outputPath = storage_path('app/exports/HOMICIDIOS-COMPARATIVO.xlsm');
             IOFactory::createWriter($spreadsheet, 'Xlsx')->save($outputPath);            
         }
         else {

@@ -93,7 +93,7 @@ class TrataExport implements WithEvents
             $cad = ($mesInicial == $mesFinal) ? self::MONTH[$mesInicial - 1] : self::MONTH[$mesInicial - 1 ] . ' - ' . self::MONTH[$mesFinal - 1];
             $title = $cad . ' - ' . $cad2;
             $sheet->setCellValue('A5', $title);
-            $sheet->setCellValue('A4', 'TRATA DE PERSONAS POR AVERIGUACIÓN PREVIA Y CARPETA DE INVESTIGACIÓN REGISTRADOS EN EL ESTADO');
+            $sheet->setCellValue('A4', 'TRATA DE PERSONAS DE CARPETA DE INVESTIGACIÓN REGISTRADOS EN EL ESTADO');
 
             $resultados = $this->realizarConsulta($year, $mesInicial, $mesFinal);
 
