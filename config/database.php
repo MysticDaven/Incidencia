@@ -109,8 +109,8 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'schema' => env('DB_DATABASE', 'laravel'),
-            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
-            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'), // valor por defecto yes
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'), //valor por defecto false
         ],
 
     ],
