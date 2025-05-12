@@ -12,11 +12,25 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     unixodbc-dev \
+    && docker-php-ext-install opcache pdo_mysql zip \
     && rm -rf /var/lib/apt/lists/*
+
+# 2. Configura OPcache directamente (sin archivo externo)
+RUN echo "\
+opcache.enable=1\n\
+opcache.memory_consumption=256\n\
+opcache.interned_strings_buffer=32\n\
+opcache.max_accelerated_files=20000\n\
+opcache.validate_timestamps=0\n\
+opcache.enable_cli=1\n\
+opcache.jit_buffer_size=100M\n\
+" > /usr/local/etc/php/conf.d/opcache.ini    
 
 # Instala drivers de SQL Server
 RUN pecl install sqlsrv pdo_sqlsrv \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv
+
+# COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini   
 
 # 2. Instala Microsoft ODBC Driver for SQL Server (versión para Bookworm)
 # RUN mkdir -p /etc/apt/keyrings \
