@@ -32,7 +32,9 @@
                             <option 
                                 value="{{ $year }}" 
                                     @if (session('rangos'))
-                                        {{ session("rangos")['reporte_anio'] == $year ? 'selected' : '' }}
+                                        {{ session("rangos")['reporte_anio'] == $year ? 'selected' : '' }}                                        
+                                    @else
+                                        {{ 'selected' }}
                                     @endif
                                 >{{$year}}
                             </option>
